@@ -1,5 +1,5 @@
-#indef Enfermero_h
-#define Enfermero_h
+#ifndef ENFERMERO_H
+#define ENFERMERO_H
 
 #include "Empleado.h"
 #include <string>
@@ -9,26 +9,25 @@ private:
     std::string turno;
     int horasExtras;
     int horasNocturnas;
-    duble tarifaHoraExtra;
+    double tarifaHoraExtra;
     double tarifaHoraNocturna;
 
 public:
-    Enfermero(int id, 
-              const std::string& nombre, 
-              const std::string& identificacion, 
-              const std::string& telefono, 
-              const std::string& correo, 
+    Enfermero(int id,
+              const std::string& nombre,
+              const std::string& identificacion,
+              const std::string& telefono,
+              const std::string& correo,
               double salarioBase,
               const std::string& turno);
 
-
     std::string getTurno() const;
-    void setTurno(const std::string& turno)
+    void setTurno(const std::string& turno);
 
     void registrarHorasExtras(int horas);
     void registrarHorasNocturnas(int horas);
 
-    double calcularpagoHorasExtras() const;
+    double calcularPagoHorasExtras() const;
     double calcularPagoHorasNocturnas() const;
 
     void setTarifaHoraExtra(double tarifa);
@@ -38,4 +37,4 @@ public:
     double calcularSalarioBruto() const override;
 };
 
-#endif // Enfermero_h
+#endif // ENFERMERO_H
