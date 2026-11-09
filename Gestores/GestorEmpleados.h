@@ -12,6 +12,9 @@ public:
     GestorEmpleados();
     ~GestorEmpleados();
 
+    GestorEmpleados(const GestorEmpleados&) = delete;
+    GestorEmpleados& operator=(const GestorEmpleados&) = delete;
+
     bool agregarEmpleado(Empleado* empleado);
     Empleado* buscarEmpleadoPorId(int id) const;
     bool eliminarEmpleadoPorId(int id);
@@ -24,4 +27,3 @@ public:
 };
 
 #endif
-//GestorEmpleados .h
