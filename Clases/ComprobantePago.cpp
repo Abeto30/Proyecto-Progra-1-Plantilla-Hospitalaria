@@ -1,5 +1,6 @@
 #include "ComprobantePago.h"
 #include <stdexcept>
+#include <cmath>
 
 // Constructor
 ComprobantePago::ComprobantePago(int id,
@@ -15,6 +16,29 @@ ComprobantePago::ComprobantePago(int id,
       deducciones(deducciones),
       salarioNeto(0),
       fecha(fecha) {
+
+    if (id <= 0) {
+        throw std::invalid_argument("El ID debe ser mayor que cero.");
+    }
+
+    if (empleado == nullptr || departamento == nullptr) {
+        throw std::invalid_argument("Empleado o departamento invalido.");
+    }
+
+    if (!std::isfinite(salarioBruto) || salarioBruto < 0) {
+        throw std::invalid_argument("El salario bruto es invalido.");
+    }
+
+    if (!std::isfinite(deducciones) ||
+        deducciones < 0 ||
+        deducciones > salarioBruto) {
+        throw std::invalid_argument("Las deducciones son invalidas.");
+    }
+
+    if (fecha.empty() ||
+        fecha.find_first_not_of(" \t\n\r") == std::string::npos) {
+        throw std::invalid_argument("La fecha no puede estar vacia.");
+    }
 
     calcularSalarioNeto();
 }
@@ -56,8 +80,10 @@ const std::string& ComprobantePago::getFecha() const {
 
 // Modificar deducciones
 void ComprobantePago::setDeducciones(double deducciones) {
-    if (deducciones < 0) {
-        throw std::invalid_argument("Las deducciones no pueden ser negativas.");
+    if (!std::isfinite(deducciones) ||
+        deducciones < 0 ||
+        deducciones > salarioBruto) {
+        throw std::invalid_argument("Las deducciones son invalidas.");
     }
 
     this->deducciones = deducciones;
@@ -68,4 +94,3 @@ void ComprobantePago::setDeducciones(double deducciones) {
 void ComprobantePago::calcularSalarioNeto() {
     salarioNeto = salarioBruto - deducciones;
 }
-//ComprobantePago.cpp
