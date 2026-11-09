@@ -1,5 +1,13 @@
 #include "Empleado.h"
+#include <cmath>
 
+// Verificar que un texto no esté vacío ni contenga solamente espacios
+bool textoValido(const std::string& texto) {
+    return !texto.empty() &&
+           texto.find_first_not_of(" \t\n\r") != std::string::npos;
+}
+
+// Constructor
 Empleado::Empleado(int id,
                    const std::string& nombre,
                    const std::string& identificacion,
@@ -7,18 +15,19 @@ Empleado::Empleado(int id,
                    const std::string& correo,
                    double salarioBase)
     : id(id),
-      nombre(nombre),
-      identificacion(identificacion),
-      telefono(telefono),
-      correo(correo),
-      salarioBase(salarioBase),
+      nombre(textoValido(nombre) ? nombre : ""),
+      identificacion(textoValido(identificacion) ? identificacion : ""),
+      telefono(textoValido(telefono) ? telefono : ""),
+      correo(textoValido(correo) ? correo : ""),
+      salarioBase(std::isfinite(salarioBase) && salarioBase >= 0
+                      ? salarioBase : 0),
       activo(true) {
 }
 
 // Destructor
 Empleado::~Empleado() {}
 
-// Inicio de los get
+// Getters
 int Empleado::getId() const {
     return id;
 }
@@ -46,27 +55,44 @@ double Empleado::getSalarioBase() const {
 bool Empleado::estaActivo() const {
     return activo;
 }
-// Fin de los get
 
-// Inicio de los set
+// Setters
 void Empleado::setNombre(const std::string& nombre) {
-    this->nombre = nombre;
+    if (textoValido(nombre)) {
+        this->nombre = nombre;
+    }
 }
 
 void Empleado::setIdentificacion(const std::string& identificacion) {
-    this->identificacion = identificacion;
+    if (textoValido(identificacion)) {
+        this->identificacion = identificacion;
+    }
 }
 
 void Empleado::setTelefono(const std::string& telefono) {
-    this->telefono = telefono;
+    if (textoValido(telefono)) {
+        this->telefono = telefono;
+    }
 }
 
 void Empleado::setCorreo(const std::string& correo) {
-    this->correo = correo;
+    if (textoValido(correo)) {
+        std::size_t arroba = correo.find('@');
+        std::size_t punto = correo.find('.', arroba);
+
+        if (arroba != std::string::npos &&
+            punto != std::string::npos &&
+            arroba > 0 &&
+            punto > arroba + 1 &&
+            punto < correo.length() - 1) {
+
+            this->correo = correo;
+        }
+    }
 }
 
 void Empleado::setSalarioBase(double salarioBase) {
-    if (salarioBase >= 0) {
+    if (std::isfinite(salarioBase) && salarioBase >= 0) {
         this->salarioBase = salarioBase;
     }
 }
@@ -74,5 +100,3 @@ void Empleado::setSalarioBase(double salarioBase) {
 void Empleado::setActivo(bool activo) {
     this->activo = activo;
 }
-// Fin de los set
-//Emplado.cpp
