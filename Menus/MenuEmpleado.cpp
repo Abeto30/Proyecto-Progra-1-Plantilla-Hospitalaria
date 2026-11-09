@@ -353,3 +353,4 @@ void cambiarEstadoEmpleado(GestorEmpleados& gestor) {
          << (empleado->estaActivo() ? "Activo" : "Inactivo")
          << endl;
 }
+//Menu empleado .cpp

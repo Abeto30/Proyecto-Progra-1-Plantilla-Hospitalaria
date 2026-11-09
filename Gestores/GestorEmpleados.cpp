@@ -82,3 +82,4 @@ Empleado* GestorEmpleados::obtenerEmpleadoEnPosicion(int posicion) const {
 
     return empleados.obtener(posicion);
 }
+//Gestor empleados .cpp
