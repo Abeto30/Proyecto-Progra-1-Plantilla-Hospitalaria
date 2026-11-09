@@ -1,6 +1,6 @@
 #include <iostream>
 #include <limits>
-#INCLUDE "MenuEmpleado.h" 
+#include "Menu de intereaccion con el usiario/MenuEmpleado.h"
 
 using namespace std;
 
@@ -9,6 +9,7 @@ void menu();
 
 int main() {
     int opcion;
+    GestorEmpleados gestor;
 
     do {
         menu();
@@ -22,7 +23,7 @@ int main() {
 
         switch (opcion) {
             case 1:
-                MENUEMPLEADO(gestor);
+                menuEmpleado(gestor);
                 break;
 
             case 2:
