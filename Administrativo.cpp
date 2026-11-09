@@ -21,7 +21,9 @@ void Administrativo::setCargo(const std::string& cargo) {
     this->cargo = cargo;
 } 
 void Administrativo::registrarHorasExtras(int horas) {
-    horasExtras += horas;
+    if (horas >= 0) {
+        horasExtras += horas;
+    }
 }
 
 double Administrativo::calcularPagoHorasExtras() const {
