@@ -36,4 +36,4 @@ public:
     void calcularSalarioNeto();
 };
 
-#endif // COMPROBANTE_PAGO_H
+#endif // COMPROBANTEPago.h
