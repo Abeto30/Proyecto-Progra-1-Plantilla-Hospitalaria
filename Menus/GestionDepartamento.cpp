@@ -207,3 +207,4 @@ void eliminarDepartamento(GestorDepartamentos& gestor) {
         cout << "No existe un departamento con ese ID." << endl;
     }
 }
+//Gestion Departamentos.cpp

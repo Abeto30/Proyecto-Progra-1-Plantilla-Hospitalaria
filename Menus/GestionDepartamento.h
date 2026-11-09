@@ -6,3 +6,4 @@
 void menuDepartamento(GestorDepartamentos& gestor);
 
 #endif
+//Gestion Departamentos.h
