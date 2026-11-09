@@ -107,11 +107,20 @@ bool leerDecimal(const string& mensaje, double& valor) {
 }
 
 // Leer texto
-bool leerTexto(const string& mensaje, string& texto) {
-    cout << mensaje;
-    getline(cin >> ws, texto);
+string leerTexto(const string& mensaje) {
+    string texto;
 
-    return !texto.empty();
+    do {
+        cout << mensaje;
+        getline(cin >> ws, texto);
+
+        if (texto.empty()) {
+            cout << "Error: este campo no puede estar vacio.\n";
+        }
+
+    } while (texto.empty());
+
+    return texto;
 }
 
 // Registrar empleado
