@@ -2,6 +2,9 @@
 #include <iomanip>
 #include <limits>
 #include <string>
+#include <sstream>
+#include <cmath>
+#include <cctype>
 
 #include "MenuEmpleado.h"
 #include "../Medico.h"
@@ -11,17 +14,105 @@
 using namespace std;
 
 // Funciones auxiliares
-bool leerEntero(const string& mensaje, int& valor);
-bool leerDecimal(const string& mensaje, double& valor);
-bool leerTexto(const string& mensaje, string& texto);
+int leerEntero(const string& mensaje);
+double leerDecimal(const string& mensaje);
+string leerTexto(const string& mensaje);
+string leerDato(const string& mensaje);
 
+// Funciones del menu
 void registrarEmpleado(GestorEmpleados& gestor);
 void mostrarEmpleados(const GestorEmpleados& gestor);
 void buscarEmpleado(GestorEmpleados& gestor);
 void eliminarEmpleado(GestorEmpleados& gestor);
 void cambiarEstadoEmpleado(GestorEmpleados& gestor);
 
-// Menu principal de empleados
+// Leer enteros
+int leerEntero(const string& mensaje) {
+    string entrada;
+    int valor;
+
+    while (true) {
+        cout << mensaje;
+        getline(cin, entrada);
+
+        stringstream ss(entrada);
+        char extra;
+
+        if (ss >> valor && !(ss >> extra) && valor >= 0) {
+            return valor;
+        }
+
+        cout << "Error: ingrese solamente un numero entero positivo.\n";
+    }
+}
+
+// Leer numeros decimales
+double leerDecimal(const string& mensaje) {
+    string entrada;
+    double valor;
+
+    while (true) {
+        cout << mensaje;
+        getline(cin, entrada);
+
+        stringstream ss(entrada);
+        char extra;
+
+        if (ss >> valor && !(ss >> extra) &&
+            valor > 0 && isfinite(valor)) {
+            return valor;
+        }
+
+        cout << "Error: ingrese un numero valido mayor que cero.\n";
+    }
+}
+
+// Leer texto que contenga letras
+string leerTexto(const string& mensaje) {
+    string texto;
+    bool tieneLetra;
+
+    while (true) {
+        cout << mensaje;
+        getline(cin, texto);
+
+        tieneLetra = false;
+
+        for (unsigned char caracter : texto) {
+            if (isalpha(caracter) || caracter >= 128) {
+                tieneLetra = true;
+                break;
+            }
+        }
+
+        if (!texto.empty() && texto.find_first_not_of(" \t") != string::npos
+            && tieneLetra) {
+            return texto;
+        }
+
+        cout << "Error: este campo debe contener texto y no puede estar vacio.\n";
+    }
+}
+
+// Leer identificacion, telefono y correo
+// Permite numeros y caracteres especiales, pero no campos vacios.
+string leerDato(const string& mensaje) {
+    string dato;
+
+    while (true) {
+        cout << mensaje;
+        getline(cin, dato);
+
+        if (!dato.empty() &&
+            dato.find_first_not_of(" \t") != string::npos) {
+            return dato;
+        }
+
+        cout << "Error: este campo no puede estar vacio.\n";
+    }
+}
+
+// Menu de empleados
 void menuEmpleado(GestorEmpleados& gestor) {
     int opcion;
 
@@ -38,10 +129,7 @@ void menuEmpleado(GestorEmpleados& gestor) {
         cout << "0. Volver al menu principal" << endl;
         cout << "===================================" << endl;
 
-        if (!leerEntero("Seleccione una opcion: ", opcion)) {
-            cout << "Entrada invalida." << endl;
-            continue;
-        }
+        opcion = leerEntero("Seleccione una opcion: ");
 
         switch (opcion) {
             case 1:
@@ -80,49 +168,6 @@ void menuEmpleado(GestorEmpleados& gestor) {
     } while (opcion != 0);
 }
 
-// Leer un numero entero
-bool leerEntero(const string& mensaje, int& valor) {
-    cout << mensaje;
-
-    if (!(cin >> valor)) {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        return false;
-    }
-
-    return true;
-}
-
-// Leer un numero decimal
-bool leerDecimal(const string& mensaje, double& valor) {
-    cout << mensaje;
-
-    if (!(cin >> valor)) {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        return false;
-    }
-
-    return true;
-}
-
-// Leer texto
-string leerTexto(const string& mensaje) {
-    string texto;
-
-    do {
-        cout << mensaje;
-        getline(cin >> ws, texto);
-
-        if (texto.empty()) {
-            cout << "Error: este campo no puede estar vacio.\n";
-        }
-
-    } while (texto.empty());
-
-    return texto;
-}
-
 // Registrar empleado
 void registrarEmpleado(GestorEmpleados& gestor) {
     int tipo;
@@ -140,18 +185,17 @@ void registrarEmpleado(GestorEmpleados& gestor) {
     cout << "2. Enfermero" << endl;
     cout << "3. Administrativo" << endl;
 
-    if (!leerEntero("Tipo de empleado: ", tipo)) {
-        cout << "Entrada invalida." << endl;
-        return;
-    }
+    tipo = leerEntero("Tipo de empleado: ");
 
     if (tipo < 1 || tipo > 3) {
         cout << "Tipo de empleado invalido." << endl;
         return;
     }
 
-    if (!leerEntero("ID del empleado: ", id) || id <= 0) {
-        cout << "ID invalido." << endl;
+    id = leerEntero("ID del empleado: ");
+
+    if (id <= 0) {
+        cout << "El ID debe ser mayor que cero." << endl;
         return;
     }
 
@@ -160,28 +204,18 @@ void registrarEmpleado(GestorEmpleados& gestor) {
         return;
     }
 
-    if (!leerTexto("Nombre completo: ", nombre) ||
-        !leerTexto("Identificacion: ", identificacion) ||
-        !leerTexto("Telefono: ", telefono) ||
-        !leerTexto("Correo: ", correo)) {
-        cout << "Debe ingresar todos los datos." << endl;
-        return;
-    }
+    nombre = leerTexto("Nombre completo: ");
+    identificacion = leerDato("Identificacion: ");
+    telefono = leerDato("Telefono: ");
+    correo = leerDato("Correo: ");
 
-    if (!leerDecimal("Salario base: ", salarioBase) ||
-        salarioBase <= 0) {
-        cout << "Salario invalido." << endl;
-        return;
-    }
+    salarioBase = leerDecimal("Salario base: ");
 
     Empleado* nuevoEmpleado = nullptr;
 
     switch (tipo) {
         case 1:
-            if (!leerTexto("Especialidad del medico: ", datoEspecifico)) {
-                cout << "Especialidad invalida." << endl;
-                return;
-            }
+            datoEspecifico = leerTexto("Especialidad del medico: ");
 
             nuevoEmpleado = new Medico(
                 id, nombre, identificacion, telefono,
@@ -190,10 +224,7 @@ void registrarEmpleado(GestorEmpleados& gestor) {
             break;
 
         case 2:
-            if (!leerTexto("Turno del enfermero: ", datoEspecifico)) {
-                cout << "Turno invalido." << endl;
-                return;
-            }
+            datoEspecifico = leerTexto("Turno del enfermero: ");
 
             nuevoEmpleado = new Enfermero(
                 id, nombre, identificacion, telefono,
@@ -202,10 +233,7 @@ void registrarEmpleado(GestorEmpleados& gestor) {
             break;
 
         case 3:
-            if (!leerTexto("Cargo administrativo: ", datoEspecifico)) {
-                cout << "Cargo invalido." << endl;
-                return;
-            }
+            datoEspecifico = leerTexto("Cargo administrativo: ");
 
             nuevoEmpleado = new Administrativo(
                 id, nombre, identificacion, telefono,
@@ -222,7 +250,7 @@ void registrarEmpleado(GestorEmpleados& gestor) {
     }
 }
 
-// Mostrar todos los empleados
+// Mostrar empleados
 void mostrarEmpleados(const GestorEmpleados& gestor) {
     int cantidad = gestor.getCantidadEmpleados();
 
@@ -257,11 +285,11 @@ void mostrarEmpleados(const GestorEmpleados& gestor) {
     }
 }
 
-// Buscar empleado por ID
+// Buscar empleado
 void buscarEmpleado(GestorEmpleados& gestor) {
-    int id;
+    int id = leerEntero("\nIngrese el ID del empleado: ");
 
-    if (!leerEntero("\nIngrese el ID del empleado: ", id)) {
+    if (id <= 0) {
         cout << "ID invalido." << endl;
         return;
     }
@@ -280,16 +308,19 @@ void buscarEmpleado(GestorEmpleados& gestor) {
     cout << "Telefono: " << empleado->getTelefono() << endl;
     cout << "Correo: " << empleado->getCorreo() << endl;
     cout << "Tipo: " << empleado->getTipoEmpleado() << endl;
-    cout << "Salario bruto: " << empleado->calcularSalarioBruto() << endl;
+    cout << "Salario bruto: "
+         << empleado->calcularSalarioBruto() << endl;
+
     cout << "Estado: "
-         << (empleado->estaActivo() ? "Activo" : "Inactivo") << endl;
+         << (empleado->estaActivo() ? "Activo" : "Inactivo")
+         << endl;
 }
 
 // Eliminar empleado
 void eliminarEmpleado(GestorEmpleados& gestor) {
-    int id;
+    int id = leerEntero("\nIngrese el ID del empleado que desea eliminar: ");
 
-    if (!leerEntero("\nIngrese el ID del empleado que desea eliminar: ", id)) {
+    if (id <= 0) {
         cout << "ID invalido." << endl;
         return;
     }
@@ -301,11 +332,11 @@ void eliminarEmpleado(GestorEmpleados& gestor) {
     }
 }
 
-// Cambiar estado del empleado
+// Cambiar estado
 void cambiarEstadoEmpleado(GestorEmpleados& gestor) {
-    int id;
+    int id = leerEntero("\nIngrese el ID del empleado: ");
 
-    if (!leerEntero("\nIngrese el ID del empleado: ", id)) {
+    if (id <= 0) {
         cout << "ID invalido." << endl;
         return;
     }
