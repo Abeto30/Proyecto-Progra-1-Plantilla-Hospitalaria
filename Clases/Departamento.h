@@ -3,7 +3,7 @@
 
 #include <string>
 #include "Puesto.h"
-#include "Lista.h"
+#include "../Listas/Lista.h"
 
 class Departamento {
 private:
