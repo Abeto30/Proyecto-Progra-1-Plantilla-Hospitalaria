@@ -20,6 +20,7 @@ public:
     bool estaEmpleadoActivo(int id) const;
 
     void limpiarEmpleados();
+    Empleado* obtenerEmpleadoEnPosicion(int posicion) const;
    
 };
 
