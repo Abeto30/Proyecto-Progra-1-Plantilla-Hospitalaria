@@ -32,7 +32,12 @@ int leerEntero(const string& mensaje) {
 
     while (true) {
         cout << mensaje;
-        getline(cin, entrada);
+
+        if (!getline(cin, entrada)) {
+            cout << "\nError al leer la entrada.\n";
+            cin.clear();
+            continue;
+        }
 
         stringstream ss(entrada);
         char extra;
@@ -41,7 +46,7 @@ int leerEntero(const string& mensaje) {
             return valor;
         }
 
-        cout << "Error: ingrese solamente un numero entero positivo.\n";
+        cout << "Error: ingrese solamente un numero entero valido.\n";
     }
 }
 
