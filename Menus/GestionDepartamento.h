@@ -1,7 +1,7 @@
 #ifndef GESTION_DEPARTAMENTO_H
 #define GESTION_DEPARTAMENTO_H
 
-#include "../GestorDepartamento.h"
+#include "../Gestores/GestorDepartamentos.h"
 
 void menuDepartamento(GestorDepartamentos& gestor);
 

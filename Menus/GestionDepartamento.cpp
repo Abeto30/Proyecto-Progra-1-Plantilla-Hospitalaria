@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include "../Departamento.h"
+#include "../Clases/Departamento.h"
 #include "GestionDepartamento.h"
 
 using namespace std;

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <limits>
-#include "Menu de intereaccion con el usiario/MenuEmpleado.h"
+
+#include "Menus/MenuEmpleado.h"
+#include "Menus/GestionDepartamento.h"
 
 using namespace std;
 
@@ -9,7 +11,9 @@ void menu();
 
 int main() {
     int opcion;
+
     GestorEmpleados gestor;
+    GestorDepartamentos gestorDepartamentos;
 
     do {
         menu();
@@ -27,7 +31,7 @@ int main() {
                 break;
 
             case 2:
-                cout << "Gestion de departamentos" << endl;
+                menuDepartamento(gestorDepartamentos);
                 break;
 
             case 3:
@@ -59,7 +63,6 @@ int main() {
     return 0;
 }
 
-//FUNCIONES AUXILIARES
 // Funcion para mostrar el menu
 void menu() {
     cout << "\n==========================================" << endl;

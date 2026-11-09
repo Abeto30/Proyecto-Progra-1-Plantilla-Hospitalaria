@@ -1,8 +1,8 @@
 #ifndef GESTOR_DEPARTAMENTOS_H
 #define GESTOR_DEPARTAMENTOS_H
 
-#include "Departamento.h"
-#include "Lista.h"
+#include "../Clases/Departamento.h"
+#include "../Listas/Lista.h"
 
 class GestorDepartamentos {
 private:

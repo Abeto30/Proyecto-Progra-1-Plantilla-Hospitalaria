@@ -7,10 +7,9 @@
 #include <cctype>
 
 #include "MenuEmpleado.h"
-#include "../Medico.h"
-#include "../Enfermero.h"
-#include "../Administrativo.h"
-
+#include "../Clases/Medico.h"
+#include "../Clases/Enfermero.h"
+#include "../Clases/Administrativo.h"
 using namespace std;
 
 // Funciones auxiliares

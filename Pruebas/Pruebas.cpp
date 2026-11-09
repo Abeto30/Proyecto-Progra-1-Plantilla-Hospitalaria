@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Lista.h"
+#include "../Listas/Lista.h"
 
 int main() {
     Lista<int> numeros;
