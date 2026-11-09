@@ -19,11 +19,13 @@ int main() {
         menu();
 
         if (!(cin >> opcion)) {
-            cout << "Entrada invalida. Ingrese un numero." << endl;
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            continue;
-        }
+    cout << "Entrada invalida. Ingrese un numero." << endl;
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    continue;
+ }
+
+ cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (opcion) {
             case 1:
