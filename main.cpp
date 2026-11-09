@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#INCLUDE "MenuEmpleado.h" 
 
 using namespace std;
 
@@ -21,7 +22,7 @@ int main() {
 
         switch (opcion) {
             case 1:
-                cout << "Gestion de empleados" << endl;
+                MENUEMPLEADO(gestor);
                 break;
 
             case 2:
