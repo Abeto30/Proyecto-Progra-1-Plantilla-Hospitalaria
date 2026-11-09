@@ -43,3 +43,4 @@ std::string Administrativo::getTipoEmpleado() const {
 double Administrativo::calcularSalarioBruto() const {
     return getSalarioBase() + calcularPagoHorasExtras();
 }
+//administrativo.cpp

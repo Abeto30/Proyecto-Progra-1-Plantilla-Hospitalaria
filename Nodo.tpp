@@ -22,4 +22,4 @@ template <typename T>
 void Nodo<T>::setSiguiente(Nodo<T>* siguiente) {
     this->siguiente = siguiente;
 }
-//Nodo cpp
+//Nodo.tpp

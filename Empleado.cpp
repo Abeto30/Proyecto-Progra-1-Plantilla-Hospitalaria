@@ -75,3 +75,4 @@ void Empleado::setActivo(bool activo) {
     this->activo = activo;
 }
 // Fin de los set
+//Emplado.cpp

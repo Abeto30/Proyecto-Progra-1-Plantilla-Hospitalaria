@@ -67,3 +67,4 @@ void Medico::setTarifaHoraGuardia(double tarifa) {
         tarifaHoraGuardia = tarifa;
     }
 }
+//medico.cpp

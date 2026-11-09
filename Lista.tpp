@@ -141,4 +141,4 @@ void Lista<T>::limpiar() {
     }
 
     cantidad = 0;
-}
+}//Lista.tpp
