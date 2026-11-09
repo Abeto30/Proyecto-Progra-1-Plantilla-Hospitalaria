@@ -1,8 +1,8 @@
-#ifndef MenuEmpleado_h
-#define MenuEmpleado_h
+#ifndef MENU_EMPLEADO_H
+#define MENU_EMPLEADO_H
 
 #include "../GestorEmpleados.h"
 
 void menuEmpleado(GestorEmpleados& gestor);
 
-#endif 
+#endif
