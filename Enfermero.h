@@ -37,4 +37,4 @@ public:
     double calcularSalarioBruto() const override;
 };
 
-#endif // ENFERMERO_H
+#endif // ENFERMERO.H

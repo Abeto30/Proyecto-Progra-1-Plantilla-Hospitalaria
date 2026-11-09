@@ -37,4 +37,4 @@ public:
     void setTarifaHoraGuardia(double tarifa);
 };
 
-#endif // MEDICO_H
+#endif // MEDICO.H
