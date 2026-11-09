@@ -22,4 +22,4 @@ public:
     void setDescripcion(const std::string& descripcion);
 };
 
-#endif // PUESTO_H
+#endif // PUESTO.H
