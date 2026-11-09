@@ -1,8 +1,8 @@
 #ifndef GESTOR_EMPLEADOS_H
 #define GESTOR_EMPLEADOS_H
 
-#include "Empleado.h"
-#include "Lista.h"
+#include "../Clases/Empleado.h"
+#include "../Listas/Lista.h"
 
 class GestorEmpleados {
 private:
@@ -21,7 +21,6 @@ public:
 
     void limpiarEmpleados();
     Empleado* obtenerEmpleadoEnPosicion(int posicion) const;
-   
 };
 
-#endif // GESTOREMPLEADOS.h
+#endif
