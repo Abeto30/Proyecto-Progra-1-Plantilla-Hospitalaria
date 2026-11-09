@@ -11,6 +11,9 @@ private:
 public:
     GestorDepartamentos();
     ~GestorDepartamentos();
+    
+    GestorDepartamentos(const GestorDepartamentos&) = delete;
+    GestorDepartamentos& operator=(const GestorDepartamentos&) = delete;
 
     bool agregarDepartamento(Departamento* departamento);
     Departamento* buscarDepartamentoPorId(int id) const;
