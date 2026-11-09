@@ -24,7 +24,12 @@ public:
     void setNombre(const std::string& nombre);
     void setDescripcion(const std::string& descripcion);
 
-    void agregarPuesto(const Puesto& puesto);
+    bool agregarPuesto(const Puesto& puesto);
+    bool existePuestoID(int id) const;
+    bool eliminarPuestoID(int id);
+
+    Puesto obtenerPuestoEnPosicion(int posicion) const;
+
     int getCantidadPuestos() const;
 };
 
