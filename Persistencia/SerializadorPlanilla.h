@@ -1,9 +1,12 @@
+
 #ifndef SERIALIZADOR_PLANILLA_H
 #define SERIALIZADOR_PLANILLA_H
 
 #include <string>
 
 class GestorComprobantes;
+class GestorEmpleados;
+class GestorDepartamentos;
 
 class SerializadorPlanilla {
 public:
@@ -13,7 +16,9 @@ public:
 
     static bool deserializar(
         const std::string& datos,
-        GestorComprobantes& gestor
+        GestorComprobantes& gestor,
+        GestorEmpleados& gestorEmpleados,
+        GestorDepartamentos& gestorDepartamentos
     );
 };
 

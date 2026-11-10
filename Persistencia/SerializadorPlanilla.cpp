@@ -2,7 +2,12 @@
 #include "SerializadorPlanilla.h"
 
 #include "../Gestores/GestorComprobantes.h"
+#include "../Gestores/GestorEmpleados.h"
+#include "../Gestores/GestorDepartamentos.h"
+
 #include "../Clases/ComprobantePago.h"
+#include "../Clases/Empleado.h"
+#include "../Clases/Departamento.h"
 
 #include <sstream>
 #include <iomanip>
@@ -10,6 +15,7 @@
 #include <memory>
 #include <unordered_set>
 #include <cmath>
+#include <exception>
 
 // SERIALIZAR: convertir los comprobantes a texto
 std::string SerializadorPlanilla::serializar(
@@ -48,7 +54,9 @@ std::string SerializadorPlanilla::serializar(
 // DESERIALIZAR: reconstruir comprobantes desde texto
 bool SerializadorPlanilla::deserializar(
     const std::string& datos,
-    GestorComprobantes& gestor
+    GestorComprobantes& gestor,
+    GestorEmpleados& gestorEmpleados,
+    GestorDepartamentos& gestorDepartamentos
 ) {
     std::istringstream entrada(datos);
 
@@ -104,24 +112,48 @@ bool SerializadorPlanilla::deserializar(
             return false;
         }
 
-        // Reconstruir el comprobante
+        // Buscar las referencias originales
+        Empleado* empleado =
+            gestorEmpleados.buscarEmpleadoPorId(empleadoId);
+
+        Departamento* departamento =
+            gestorDepartamentos.buscarDepartamentoPorId(departamentoId);
+
         std::unique_ptr<ComprobantePago> comprobante;
 
         try {
-            comprobante = std::make_unique<ComprobantePago>(
-                id,
-                empleadoId,
-                nombreEmpleado,
-                identificacion,
-                tipoEmpleado,
-                departamentoId,
-                nombreDepartamento,
-                salarioBruto,
-                deducciones,
-                fecha
-            );
-        }
-        catch (const std::exception&) {
+
+            // Si existen ambas entidades, recuperar las referencias.
+            if (empleado != nullptr && departamento != nullptr) {
+
+                comprobante = std::make_unique<ComprobantePago>(
+                    id,
+                    empleado,
+                    departamento,
+                    salarioBruto,
+                    deducciones,
+                    fecha
+                );
+
+            } else {
+
+                // Si alguna entidad ya no existe, conservar
+                // los datos históricos del comprobante.
+                comprobante = std::make_unique<ComprobantePago>(
+                    id,
+                    empleadoId,
+                    nombreEmpleado,
+                    identificacion,
+                    tipoEmpleado,
+                    departamentoId,
+                    nombreDepartamento,
+                    salarioBruto,
+                    deducciones,
+                    fecha
+                );
+            }
+
+        } catch (const std::exception&) {
             return false;
         }
 
@@ -134,32 +166,20 @@ bool SerializadorPlanilla::deserializar(
     if (!entrada.eof()) {
         return false;
     }
-
-    // Preparar los punteros para transferirlos al gestor
-    std::vector<ComprobantePago*> punteros;
-
-    for (const auto& comprobante : temporales) {
-        punteros.push_back(comprobante.get());
-    }
-
     // Reemplazar los comprobantes anteriores
     gestor.limpiarComprobantes();
 
-    for (ComprobantePago* comprobante : punteros) {
+    // Transferir la propiedad al gestor
+    for (auto& temporal : temporales) {
+
+        ComprobantePago* comprobante = temporal.get();
 
         if (!gestor.agregarComprobante(comprobante)) {
             gestor.limpiarComprobantes();
             return false;
         }
 
-        // El gestor ahora es propietario del comprobante
-        for (auto& temporal : temporales) {
-
-            if (temporal.get() == comprobante) {
-                temporal.release();
-                break;
-            }
-        }
+        temporal.release();
     }
 
     return true;

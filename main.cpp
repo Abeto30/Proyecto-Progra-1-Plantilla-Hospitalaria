@@ -34,8 +34,8 @@ void menu() {
 // Guardar departamentos
 void guardarDepartamentos(
     AlmacenamientoArchivos& almacenamiento,
-    const GestorDepartamentos& gestorDepartamentos) {
-
+    const GestorDepartamentos& gestorDepartamentos
+) {
     string datos = SerializadorDepartamentos::serializar(
         gestorDepartamentos
     );
@@ -50,8 +50,8 @@ void guardarDepartamentos(
 // Guardar empleados
 void guardarEmpleados(
     AlmacenamientoArchivos& almacenamiento,
-    const GestorEmpleados& gestorEmpleados) {
-
+    const GestorEmpleados& gestorEmpleados
+) {
     string datos = SerializadorEmpleados::serializar(
         gestorEmpleados
     );
@@ -66,8 +66,8 @@ void guardarEmpleados(
 // Guardar comprobantes de pago
 void guardarPlanilla(
     AlmacenamientoArchivos& almacenamiento,
-    const GestorComprobantes& gestorComprobantes) {
-
+    const GestorComprobantes& gestorComprobantes
+) {
     string datos = SerializadorPlanilla::serializar(
         gestorComprobantes
     );
@@ -84,8 +84,8 @@ void guardarDatos(
     AlmacenamientoArchivos& almacenamiento,
     const GestorDepartamentos& gestorDepartamentos,
     const GestorEmpleados& gestorEmpleados,
-    const GestorComprobantes& gestorComprobantes) {
-
+    const GestorComprobantes& gestorComprobantes
+) {
     guardarDepartamentos(almacenamiento, gestorDepartamentos);
     guardarEmpleados(almacenamiento, gestorEmpleados);
     guardarPlanilla(almacenamiento, gestorComprobantes);
@@ -148,7 +148,7 @@ int main() {
              << endl;
     }
 
-    // Cargar comprobantes de pago
+    // Cargar comprobantes después de empleados y departamentos
     string datosPlanilla;
 
     if (almacenamiento.cargarPlanilla(datosPlanilla)) {
@@ -157,7 +157,9 @@ int main() {
 
             if (SerializadorPlanilla::deserializar(
                     datosPlanilla,
-                    gestorComprobantes)) {
+                    gestorComprobantes,
+                    gestor,
+                    gestorDepartamentos)) {
 
                 cout << "Comprobantes de pago cargados correctamente."
                      << endl;
