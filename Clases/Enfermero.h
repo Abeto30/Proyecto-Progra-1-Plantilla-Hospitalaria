@@ -24,6 +24,12 @@ public:
     std::string getTurno() const;
     void setTurno(const std::string& turno);
 
+    int getHorasExtras() const;
+    int getHorasNocturnas() const;
+
+    double getTarifaHoraExtra() const;
+    double getTarifaHoraNocturna() const;
+
     void registrarHorasExtras(int horas);
     void registrarHorasNocturnas(int horas);
 
@@ -37,4 +43,4 @@ public:
     double calcularSalarioBruto() const override;
 };
 
-#endif // ENFERMERO.H
+#endif // ENFERMERO.h

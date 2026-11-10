@@ -34,7 +34,21 @@ void Medico::setEspecialidad(const std::string& especialidad) {
     }
 }
 
+int Medico::getHorasExtras() const {
+    return horasExtras;
+}
 
+int Medico::getHorasGuardia() const {
+    return horasGuardia;
+}
+
+double Medico::getTarifaHoraExtra() const {
+    return tarifaHoraExtra;
+}
+
+double Medico::getTarifaHoraGuardia() const {
+    return tarifaHoraGuardia;
+}
 
 // Registrar horas extras
 void Medico::registrarHorasExtras(int horas) {
