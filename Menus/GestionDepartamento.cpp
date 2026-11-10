@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 
@@ -15,13 +16,15 @@ void buscarDepartamento(GestorDepartamentos& gestor);
 
 void eliminarDepartamento(
     GestorDepartamentos& gestor,
-    GestorEmpleados& gestorEmpleados
+    GestorEmpleados& gestorEmpleados,
+    GestorComprobantes& gestorComprobantes
 );
 
 // Menu de departamentos
 void menuDepartamento(
     GestorDepartamentos& gestor,
-    GestorEmpleados& gestorEmpleados
+    GestorEmpleados& gestorEmpleados,
+    GestorComprobantes& gestorComprobantes
 ) {
     int opcion;
 
@@ -53,7 +56,11 @@ void menuDepartamento(
                 break;
 
             case 4:
-                eliminarDepartamento(gestor, gestorEmpleados);
+                eliminarDepartamento(
+                    gestor,
+                    gestorEmpleados,
+                    gestorComprobantes
+                );
                 break;
 
             case 5:
@@ -151,10 +158,12 @@ void buscarDepartamento(GestorDepartamentos& gestor) {
     cout << "Cantidad de puestos: "
          << departamento->getCantidadPuestos() << endl;
 }
+
 // Eliminar departamento
 void eliminarDepartamento(
     GestorDepartamentos& gestor,
-    GestorEmpleados& gestorEmpleados
+    GestorEmpleados& gestorEmpleados,
+    GestorComprobantes& gestorComprobantes
 ) {
     int id = leerEntero(
         "\nIngrese el ID del departamento que desea eliminar: ",
@@ -182,6 +191,14 @@ void eliminarDepartamento(
             cout << "Tiene empleados asignados." << endl;
             return;
         }
+    }
+
+    // Verificar si existen comprobantes asociados
+    if (gestorComprobantes.tieneComprobanteParaDepartamento(id)) {
+        cout << "\nNo se puede eliminar el departamento." << endl;
+        cout << "Tiene comprobantes de pago asociados." << endl;
+        cout << "Los registros historicos deben conservarse." << endl;
+        return;
     }
 
     // Verificar si existen puestos registrados

@@ -3,10 +3,12 @@
 
 #include "../Gestores/GestorEmpleados.h"
 #include "../Gestores/GestorDepartamentos.h"
+#include "../Gestores/GestorComprobantes.h"
 
 void menuEmpleado(
     GestorEmpleados& gestor,
-    GestorDepartamentos& gestorDepartamentos
+    GestorDepartamentos& gestorDepartamentos,
+    GestorComprobantes& gestorComprobantes
 );
 
 #endif

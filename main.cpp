@@ -184,12 +184,18 @@ int main() {
         switch (opcion) {
 
             case 1:
-                menuEmpleado(gestor, gestorDepartamentos);
+            menuEmpleado(
+             gestor,
+              gestorDepartamentos,
+                gestorComprobantes);
                 break;
 
             case 2:
-                menuDepartamento(gestorDepartamentos, gestor);
-                break;
+            menuDepartamento(
+             gestorDepartamentos,
+              gestor,
+                gestorComprobantes);
+                 break;
 
             case 3:
                 menuPuesto(gestorDepartamentos);

@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -10,6 +9,7 @@
 #include "../Clases/Administrativo.h"
 #include "../Clases/Departamento.h"
 #include "../Validacion General/Entrada.h"
+#include "../Gestores/GestorComprobantes.h"
 
 using namespace std;
 
@@ -27,7 +27,12 @@ void registrarEmpleado(
 
 void mostrarEmpleados(const GestorEmpleados& gestor);
 void buscarEmpleado(GestorEmpleados& gestor);
-void eliminarEmpleado(GestorEmpleados& gestor);
+
+void eliminarEmpleado(
+    GestorEmpleados& gestor,
+    GestorComprobantes& gestorComprobantes
+);
+
 void cambiarEstadoEmpleado(GestorEmpleados& gestor);
 
 // Leer texto que contenga letras
@@ -94,7 +99,6 @@ string leerCorreo(const string& mensaje) {
         cout << mensaje;
         getline(cin, correo);
 
-        // Eliminar espacios al inicio y al final
         size_t inicio = correo.find_first_not_of(" \t\r\n");
 
         if (inicio != string::npos) {
@@ -113,7 +117,8 @@ string leerCorreo(const string& mensaje) {
 // Menu de empleados
 void menuEmpleado(
     GestorEmpleados& gestor,
-    GestorDepartamentos& gestorDepartamentos
+    GestorDepartamentos& gestorDepartamentos,
+    GestorComprobantes& gestorComprobantes
 ) {
     int opcion;
 
@@ -146,7 +151,7 @@ void menuEmpleado(
                 break;
 
             case 4:
-                eliminarEmpleado(gestor);
+                eliminarEmpleado(gestor, gestorComprobantes);
                 break;
 
             case 5:
@@ -182,14 +187,12 @@ void registrarEmpleado(
     string correo;
     string datoEspecifico;
 
-    // Verificar que existan departamentos
     if (gestorDepartamentos.getCantidadDepartamentos() == 0) {
         cout << "\nNo hay departamentos registrados." << endl;
         cout << "Debe registrar un departamento primero." << endl;
         return;
     }
 
-    // Mostrar departamentos disponibles
     cout << "\n--- DEPARTAMENTOS DISPONIBLES ---" << endl;
 
     for (int i = 0; i < gestorDepartamentos.getCantidadDepartamentos(); i++) {
@@ -203,7 +206,6 @@ void registrarEmpleado(
         }
     }
 
-    // Seleccionar departamento
     idDepartamento = leerEntero(
         "\nIngrese el ID del departamento: ",
         1,
@@ -270,7 +272,6 @@ void registrarEmpleado(
             break;
     }
 
-    // Asignar departamento al empleado
     nuevoEmpleado->setDepartamento(departamento);
 
     if (gestor.agregarEmpleado(nuevoEmpleado)) {
@@ -360,17 +361,34 @@ void buscarEmpleado(GestorEmpleados& gestor) {
 }
 
 // Eliminar empleado
-void eliminarEmpleado(GestorEmpleados& gestor) {
+void eliminarEmpleado(
+    GestorEmpleados& gestor,
+    GestorComprobantes& gestorComprobantes
+) {
     int id = leerEntero(
         "\nIngrese el ID del empleado que desea eliminar: ",
         1,
         2147483647
     );
 
+    Empleado* empleado = gestor.buscarEmpleadoPorId(id);
+
+    if (empleado == nullptr) {
+        cout << "No existe un empleado con ese ID." << endl;
+        return;
+    }
+
+    if (gestorComprobantes.tieneComprobanteParaEmpleado(id)) {
+        cout << "\nNo se puede eliminar el empleado." << endl;
+        cout << "Tiene comprobantes de pago asociados." << endl;
+        cout << "Los registros historicos deben conservarse." << endl;
+        return;
+    }
+
     if (gestor.eliminarEmpleadoPorId(id)) {
         cout << "Empleado eliminado correctamente." << endl;
     } else {
-        cout << "No existe un empleado con ese ID." << endl;
+        cout << "No se pudo eliminar el empleado." << endl;
     }
 }
 
