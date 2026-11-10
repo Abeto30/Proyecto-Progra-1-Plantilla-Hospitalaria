@@ -27,4 +27,4 @@ void Puesto::setNombre(const std::string& nombre) {
 void Puesto::setDescripcion(const std::string& descripcion) {
     this->descripcion = descripcion;
 }
-//Puesto.cpp 
+//Puesto.cpp
