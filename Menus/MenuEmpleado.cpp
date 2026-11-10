@@ -1,9 +1,7 @@
+
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <sstream>
-#include <cmath>
-#include <cctype>
 
 #include "MenuEmpleado.h"
 #include "../Clases/Medico.h"
@@ -24,62 +22,15 @@ void buscarEmpleado(GestorEmpleados& gestor);
 void eliminarEmpleado(GestorEmpleados& gestor);
 void cambiarEstadoEmpleado(GestorEmpleados& gestor);
 
-// Leer enteros
-int leerEntero(const string& mensaje) {
-    string entrada;
-    int valor;
-
-    while (true) {
-        cout << mensaje;
-
-        if (!getline(cin, entrada)) {
-            cout << "\nError al leer la entrada.\n";
-            cin.clear();
-            continue;
-        }
-
-        stringstream ss(entrada);
-        char extra;
-
-        if (ss >> valor && !(ss >> extra) && valor >= 0) {
-            return valor;
-        }
-
-        cout << "Error: ingrese solamente un numero entero valido.\n";
-    }
-}
-
-// Leer numeros decimales
-double leerDecimal(const string& mensaje) {
-    string entrada;
-    double valor;
-
-    while (true) {
-        cout << mensaje;
-        getline(cin, entrada);
-
-        stringstream ss(entrada);
-        char extra;
-
-        if (ss >> valor && !(ss >> extra) &&
-            valor > 0 && isfinite(valor)) {
-            return valor;
-        }
-
-        cout << "Error: ingrese un numero valido mayor que cero.\n";
-    }
-}
-
 // Leer texto que contenga letras
 string leerTexto(const string& mensaje) {
     string texto;
-    bool tieneLetra;
 
     while (true) {
         cout << mensaje;
         getline(cin, texto);
 
-        tieneLetra = false;
+        bool tieneLetra = false;
 
         for (unsigned char caracter : texto) {
             if (isalpha(caracter) || caracter >= 128) {
@@ -88,8 +39,9 @@ string leerTexto(const string& mensaje) {
             }
         }
 
-        if (!texto.empty() && texto.find_first_not_of(" \t") != string::npos
-            && tieneLetra) {
+        if (!texto.empty() &&
+            texto.find_first_not_of(" \t") != string::npos &&
+            tieneLetra) {
             return texto;
         }
 
@@ -132,7 +84,7 @@ void menuEmpleado(GestorEmpleados& gestor) {
         cout << "0. Volver al menu principal" << endl;
         cout << "===================================" << endl;
 
-        opcion = leerEntero("Seleccione una opcion: ");
+        opcion = leerEntero("Seleccione una opcion: ", 0, 6);
 
         switch (opcion) {
             case 1:
@@ -163,9 +115,6 @@ void menuEmpleado(GestorEmpleados& gestor) {
             case 0:
                 cout << "Volviendo al menu principal..." << endl;
                 break;
-
-            default:
-                cout << "Opcion invalida." << endl;
         }
 
     } while (opcion != 0);
@@ -188,19 +137,9 @@ void registrarEmpleado(GestorEmpleados& gestor) {
     cout << "2. Enfermero" << endl;
     cout << "3. Administrativo" << endl;
 
-    tipo = leerEntero("Tipo de empleado: ");
+    tipo = leerEntero("Tipo de empleado: ", 1, 3);
 
-    if (tipo < 1 || tipo > 3) {
-        cout << "Tipo de empleado invalido." << endl;
-        return;
-    }
-
-    id = leerEntero("ID del empleado: ");
-
-    if (id <= 0) {
-        cout << "El ID debe ser mayor que cero." << endl;
-        return;
-    }
+    id = leerEntero("ID del empleado: ", 1, 2147483647);
 
     if (gestor.buscarEmpleadoPorId(id) != nullptr) {
         cout << "Ya existe un empleado con ese ID." << endl;
@@ -212,7 +151,7 @@ void registrarEmpleado(GestorEmpleados& gestor) {
     telefono = leerDato("Telefono: ");
     correo = leerDato("Correo: ");
 
-    salarioBase = leerDecimal("Salario base: ");
+    salarioBase = leerDouble("Salario base: ", 0, true);
 
     Empleado* nuevoEmpleado = nullptr;
 
@@ -290,12 +229,7 @@ void mostrarEmpleados(const GestorEmpleados& gestor) {
 
 // Buscar empleado
 void buscarEmpleado(GestorEmpleados& gestor) {
-    int id = leerEntero("\nIngrese el ID del empleado: ");
-
-    if (id <= 0) {
-        cout << "ID invalido." << endl;
-        return;
-    }
+    int id = leerEntero("\nIngrese el ID del empleado: ", 1, 2147483647);
 
     Empleado* empleado = gestor.buscarEmpleadoPorId(id);
 
@@ -321,12 +255,11 @@ void buscarEmpleado(GestorEmpleados& gestor) {
 
 // Eliminar empleado
 void eliminarEmpleado(GestorEmpleados& gestor) {
-    int id = leerEntero("\nIngrese el ID del empleado que desea eliminar: ");
-
-    if (id <= 0) {
-        cout << "ID invalido." << endl;
-        return;
-    }
+    int id = leerEntero(
+        "\nIngrese el ID del empleado que desea eliminar: ",
+        1,
+        2147483647
+    );
 
     if (gestor.eliminarEmpleadoPorId(id)) {
         cout << "Empleado eliminado correctamente." << endl;
@@ -337,12 +270,7 @@ void eliminarEmpleado(GestorEmpleados& gestor) {
 
 // Cambiar estado
 void cambiarEstadoEmpleado(GestorEmpleados& gestor) {
-    int id = leerEntero("\nIngrese el ID del empleado: ");
-
-    if (id <= 0) {
-        cout << "ID invalido." << endl;
-        return;
-    }
+    int id = leerEntero("\nIngrese el ID del empleado: ", 1, 2147483647);
 
     Empleado* empleado = gestor.buscarEmpleadoPorId(id);
 
@@ -357,4 +285,5 @@ void cambiarEstadoEmpleado(GestorEmpleados& gestor) {
          << (empleado->estaActivo() ? "Activo" : "Inactivo")
          << endl;
 }
-//Menu empleado .cpp
+
+// Menu empleado .cpp
