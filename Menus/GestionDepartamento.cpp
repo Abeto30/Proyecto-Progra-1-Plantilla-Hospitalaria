@@ -1,57 +1,18 @@
+
 #include <iostream>
 #include <string>
-#include <sstream>
+
 #include "../Clases/Departamento.h"
 #include "GestionDepartamento.h"
+#include "../Validacion General/Entrada.h"
 
 using namespace std;
-
-// Funciones auxiliares
-int leerEnteroDepartamento(const string& mensaje);
-string leerTextoDepartamento(const string& mensaje);
 
 // Funciones del menu
 void registrarDepartamento(GestorDepartamentos& gestor);
 void mostrarDepartamentos(const GestorDepartamentos& gestor);
 void buscarDepartamento(GestorDepartamentos& gestor);
 void eliminarDepartamento(GestorDepartamentos& gestor);
-
-// Leer enteros
-int leerEnteroDepartamento(const string& mensaje) {
-    string entrada;
-    int valor;
-
-    while (true) {
-        cout << mensaje;
-        getline(cin, entrada);
-
-        stringstream ss(entrada);
-        char extra;
-
-        if (ss >> valor && !(ss >> extra) && valor >= 0) {
-            return valor;
-        }
-
-        cout << "Error: ingrese un numero entero valido.\n";
-    }
-}
-
-// Leer texto
-string leerTextoDepartamento(const string& mensaje) {
-    string texto;
-
-    while (true) {
-        cout << mensaje;
-        getline(cin, texto);
-
-        if (!texto.empty() &&
-            texto.find_first_not_of(" \t") != string::npos) {
-            return texto;
-        }
-
-        cout << "Error: este campo no puede estar vacio.\n";
-    }
-}
 
 // Menu de departamentos
 void menuDepartamento(GestorDepartamentos& gestor) {
@@ -69,7 +30,7 @@ void menuDepartamento(GestorDepartamentos& gestor) {
         cout << "0. Volver al menu principal" << endl;
         cout << "===================================" << endl;
 
-        opcion = leerEnteroDepartamento("Seleccione una opcion: ");
+        opcion = leerEntero("Seleccione una opcion: ", 0, 5);
 
         switch (opcion) {
             case 1:
@@ -96,9 +57,6 @@ void menuDepartamento(GestorDepartamentos& gestor) {
             case 0:
                 cout << "Volviendo al menu principal..." << endl;
                 break;
-
-            default:
-                cout << "Opcion invalida." << endl;
         }
 
     } while (opcion != 0);
@@ -112,20 +70,15 @@ void registrarDepartamento(GestorDepartamentos& gestor) {
 
     cout << "\n--- REGISTRO DE DEPARTAMENTO ---" << endl;
 
-    id = leerEnteroDepartamento("ID del departamento: ");
-
-    if (id <= 0) {
-        cout << "El ID debe ser mayor que cero." << endl;
-        return;
-    }
+    id = leerEntero("ID del departamento: ", 1, 2147483647);
 
     if (gestor.buscarDepartamentoPorId(id) != nullptr) {
         cout << "Ya existe un departamento con ese ID." << endl;
         return;
     }
 
-    nombre = leerTextoDepartamento("Nombre del departamento: ");
-    descripcion = leerTextoDepartamento("Descripcion: ");
+    nombre = leerLinea("Nombre del departamento: ");
+    descripcion = leerLinea("Descripcion: ");
 
     Departamento* nuevo = new Departamento(id, nombre, descripcion);
 
@@ -168,8 +121,10 @@ void mostrarDepartamentos(const GestorDepartamentos& gestor) {
 
 // Buscar departamento
 void buscarDepartamento(GestorDepartamentos& gestor) {
-    int id = leerEnteroDepartamento(
-        "\nIngrese el ID del departamento: "
+    int id = leerEntero(
+        "\nIngrese el ID del departamento: ",
+        1,
+        2147483647
     );
 
     Departamento* departamento =
@@ -192,14 +147,11 @@ void buscarDepartamento(GestorDepartamentos& gestor) {
 
 // Eliminar departamento
 void eliminarDepartamento(GestorDepartamentos& gestor) {
-    int id = leerEnteroDepartamento(
-        "\nIngrese el ID del departamento que desea eliminar: "
+    int id = leerEntero(
+        "\nIngrese el ID del departamento que desea eliminar: ",
+        1,
+        2147483647
     );
-
-    if (id <= 0) {
-        cout << "ID invalido." << endl;
-        return;
-    }
 
     if (gestor.eliminarDepartamentoPorId(id)) {
         cout << "Departamento eliminado correctamente." << endl;
@@ -207,4 +159,5 @@ void eliminarDepartamento(GestorDepartamentos& gestor) {
         cout << "No existe un departamento con ese ID." << endl;
     }
 }
-//Gestion Departamentos.cpp
+
+// Gestion Departamentos.cpp
