@@ -4,9 +4,15 @@
 
 #include <string>
 
+class Empleado;
+class Departamento;
+
 class ComprobantePago {
 private:
     int id;
+
+    Empleado* empleado;
+    Departamento* departamento;
 
     int empleadoId;
     std::string nombreEmpleado;
@@ -23,6 +29,7 @@ private:
     std::string fecha;
 
 public:
+  
     ComprobantePago(
         int id,
         int empleadoId,
@@ -36,7 +43,20 @@ public:
         const std::string& fecha
     );
 
+    // Constructor con referencias a las entidades existentes
+    ComprobantePago(
+        int id,
+        Empleado* empleado,
+        Departamento* departamento,
+        double salarioBruto,
+        double deducciones,
+        const std::string& fecha
+    );
+
     int getId() const;
+
+    Empleado* getEmpleado() const;
+    Departamento* getDepartamento() const;
 
     int getEmpleadoId() const;
     std::string getNombreEmpleado() const;
@@ -57,4 +77,3 @@ public:
 };
 
 #endif
-// COMPROBANTEPago.h

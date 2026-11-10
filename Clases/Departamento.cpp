@@ -1,71 +1,173 @@
+
+#include "ComprobantePago.h"
+
+#include "Empleado.h"
 #include "Departamento.h"
+
 #include <stdexcept>
+#include <cmath>
 
-Departamento::Departamento(int id,
-                           const std::string& nombre,
-                           const std::string& descripcion)
+// Constructor para reconstruir comprobantes desde archivos
+ComprobantePago::ComprobantePago(
+    int id,
+    int empleadoId,
+    const std::string& nombreEmpleado,
+    const std::string& identificacion,
+    const std::string& tipoEmpleado,
+    int departamentoId,
+    const std::string& nombreDepartamento,
+    double salarioBruto,
+    double deducciones,
+    const std::string& fecha
+)
     : id(id),
-      nombre(nombre),
-      descripcion(descripcion) {}
+      empleado(nullptr),
+      departamento(nullptr),
+      empleadoId(empleadoId),
+      nombreEmpleado(nombreEmpleado),
+      identificacion(identificacion),
+      tipoEmpleado(tipoEmpleado),
+      departamentoId(departamentoId),
+      nombreDepartamento(nombreDepartamento),
+      salarioBruto(salarioBruto),
+      deducciones(deducciones),
+      salarioNeto(0),
+      fecha(fecha) {
 
-int Departamento::getId() const {
+    if (id <= 0 || empleadoId <= 0 || departamentoId <= 0) {
+        throw std::invalid_argument("Los ID deben ser mayores que cero.");
+    }
+
+    if (nombreEmpleado.empty() ||
+        identificacion.empty() ||
+        tipoEmpleado.empty() ||
+        nombreDepartamento.empty()) {
+        throw std::invalid_argument(
+            "Los datos del empleado o departamento son invalidos."
+        );
+    }
+
+    if (!std::isfinite(salarioBruto) || salarioBruto < 0) {
+        throw std::invalid_argument("El salario bruto es invalido.");
+    }
+
+    if (!std::isfinite(deducciones) ||
+        deducciones < 0 ||
+        deducciones > salarioBruto) {
+        throw std::invalid_argument("Las deducciones son invalidas.");
+    }
+
+    if (fecha.empty() ||
+        fecha.find_first_not_of(" \t\n\r") == std::string::npos) {
+        throw std::invalid_argument("La fecha no puede estar vacia.");
+    }
+
+    calcularSalarioNeto();
+}
+
+// Constructor con referencias de agregacion
+ComprobantePago::ComprobantePago(
+    int id,
+    Empleado* empleado,
+    Departamento* departamento,
+    double salarioBruto,
+    double deducciones,
+    const std::string& fecha
+)
+    : ComprobantePago(
+        id,
+        empleado != nullptr ? empleado->getId() : 0,
+        empleado != nullptr ? empleado->getNombre() : "",
+        empleado != nullptr ? empleado->getIdentificacion() : "",
+        empleado != nullptr ? empleado->getTipoEmpleado() : "",
+        departamento != nullptr ? departamento->getId() : 0,
+        departamento != nullptr ? departamento->getNombre() : "",
+        salarioBruto,
+        deducciones,
+        fecha
+    ) {
+
+    if (empleado == nullptr || departamento == nullptr) {
+        throw std::invalid_argument(
+            "El empleado y el departamento son obligatorios."
+        );
+    }
+
+    this->empleado = empleado;
+    this->departamento = departamento;
+}
+
+// Obtener ID del comprobante
+int ComprobantePago::getId() const {
     return id;
 }
 
-std::string Departamento::getNombre() const {
-    return nombre;
+// Obtener referencias de agregacion
+Empleado* ComprobantePago::getEmpleado() const {
+    return empleado;
 }
 
-std::string Departamento::getDescripcion() const {
-    return descripcion;
+Departamento* ComprobantePago::getDepartamento() const {
+    return departamento;
 }
 
-void Departamento::setNombre(const std::string& nombre) {
-    this->nombre = nombre;
+// Obtener datos del empleado
+int ComprobantePago::getEmpleadoId() const {
+    return empleadoId;
 }
 
-void Departamento::setDescripcion(const std::string& descripcion) {
-    this->descripcion = descripcion;
+std::string ComprobantePago::getNombreEmpleado() const {
+    return nombreEmpleado;
 }
 
-bool Departamento::agregarPuesto(const Puesto& puesto) {
-    if (existePuestoID(puesto.getId())) {
-        return false;
+std::string ComprobantePago::getIdentificacion() const {
+    return identificacion;
+}
+
+std::string ComprobantePago::getTipoEmpleado() const {
+    return tipoEmpleado;
+}
+
+// Obtener datos del departamento
+int ComprobantePago::getDepartamentoId() const {
+    return departamentoId;
+}
+
+std::string ComprobantePago::getNombreDepartamento() const {
+    return nombreDepartamento;
+}
+
+// Obtener salarios
+double ComprobantePago::getSalarioBruto() const {
+    return salarioBruto;
+}
+
+double ComprobantePago::getDeducciones() const {
+    return deducciones;
+}
+
+double ComprobantePago::getSalarioNeto() const {
+    return salarioNeto;
+}
+
+// Obtener fecha
+const std::string& ComprobantePago::getFecha() const {
+    return fecha;
+}
+
+// Modificar deducciones
+void ComprobantePago::setDeducciones(double deducciones) {
+    if (!std::isfinite(deducciones) ||
+        deducciones < 0 ||
+        deducciones > salarioBruto) {
+        throw std::invalid_argument("Las deducciones son invalidas.");
     }
 
-    puestos.insertarFinal(puesto);
-    return true;
+    this->deducciones = deducciones;
+    calcularSalarioNeto();
 }
 
-bool Departamento::existePuestoID(int id) const {
-    for (int i = 0; i < puestos.getCantidad(); i++) {
-        if (puestos.obtener(i).getId() == id) {
-            return true;
-        }
-    }
-
-    return false;
+// Calcular salario neto
+void ComprobantePago::calcularSalarioNeto() {
+    salarioNeto = salarioBruto - deducciones;
 }
-
-bool Departamento::eliminarPuestoID(int id) {
-    for (int i = 0; i < puestos.getCantidad(); i++) {
-        if (puestos.obtener(i).getId() == id) {
-            return puestos.eliminar(i);
-        }
-    }
-
-    return false;
-}
-
-Puesto Departamento::obtenerPuestoEnPosicion(int posicion) const {
-    if (posicion < 0 || posicion >= puestos.getCantidad()) {
-        throw std::out_of_range("Posicion fuera de rango");
-    }
-
-    return puestos.obtener(posicion);
-}
-
-int Departamento::getCantidadPuestos() const {
-    return puestos.getCantidad();
-}
-//Departamento .cpp
