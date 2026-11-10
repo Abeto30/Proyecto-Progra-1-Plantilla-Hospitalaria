@@ -1,3 +1,4 @@
+
 #include "SerializadorDepartamentos.h"
 
 #include "../Gestores/GestorDepartamentos.h"
@@ -72,6 +73,7 @@ bool SerializadorDepartamentos::deserializar(
 
     std::vector<DatosDepartamento> departamentosLeidos;
     std::unordered_set<int> idsDepartamentos;
+    std::unordered_set<int> idsPuestosGlobales;
 
     // Leer y validar todos los departamentos
     for (int i = 0; i < cantidadDepartamentos; i++) {
@@ -91,8 +93,6 @@ bool SerializadorDepartamentos::deserializar(
             return false;
         }
 
-        std::unordered_set<int> idsPuestos;
-
         // Leer y validar los puestos
         for (int j = 0; j < cantidadPuestos; j++) {
 
@@ -104,7 +104,8 @@ bool SerializadorDepartamentos::deserializar(
                 return false;
             }
 
-            if (!idsPuestos.insert(puesto.id).second) {
+            // Verificar que el ID sea único en todos los departamentos
+            if (!idsPuestosGlobales.insert(puesto.id).second) {
                 return false;
             }
 
