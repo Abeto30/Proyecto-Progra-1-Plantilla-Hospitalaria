@@ -2,8 +2,11 @@
 #define GESTION_DEPARTAMENTO_H
 
 #include "../Gestores/GestorDepartamentos.h"
+#include "../Gestores/GestorEmpleados.h"
 
-void menuDepartamento(GestorDepartamentos& gestor);
+void menuDepartamento(
+    GestorDepartamentos& gestor,
+    GestorEmpleados& gestorEmpleados
+);
 
 #endif
-//Gestion Departamentos.h
