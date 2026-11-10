@@ -9,6 +9,7 @@
 #include <vector>
 #include <memory>
 #include <utility>
+#include <unordered_set>
 
 // SERIALIZAR: convertir departamentos y puestos a texto
 std::string SerializadorDepartamentos::serializar(
@@ -70,8 +71,9 @@ bool SerializadorDepartamentos::deserializar(
     };
 
     std::vector<DatosDepartamento> departamentosLeidos;
+    std::unordered_set<int> idsDepartamentos;
 
-    // Leer los datos antes de modificar el gestor
+    // Leer y validar todos los departamentos
     for (int i = 0; i < cantidadDepartamentos; i++) {
 
         DatosDepartamento departamento;
@@ -85,6 +87,13 @@ bool SerializadorDepartamentos::deserializar(
             return false;
         }
 
+        if (!idsDepartamentos.insert(departamento.id).second) {
+            return false;
+        }
+
+        std::unordered_set<int> idsPuestos;
+
+        // Leer y validar los puestos
         for (int j = 0; j < cantidadPuestos; j++) {
 
             DatosPuesto puesto;
@@ -95,10 +104,21 @@ bool SerializadorDepartamentos::deserializar(
                 return false;
             }
 
+            if (!idsPuestos.insert(puesto.id).second) {
+                return false;
+            }
+
             departamento.puestos.push_back(puesto);
         }
 
         departamentosLeidos.push_back(departamento);
+    }
+
+    // Rechazar contenido adicional inesperado
+    entrada >> std::ws;
+
+    if (!entrada.eof()) {
+        return false;
     }
 
     // Reconstruir los departamentos temporalmente
@@ -128,17 +148,30 @@ bool SerializadorDepartamentos::deserializar(
         temporales.push_back(std::move(departamento));
     }
 
+    // Preparar los departamentos para transferirlos al gestor
+    std::vector<Departamento*> punteros;
+
+    for (const auto& departamento : temporales) {
+        punteros.push_back(departamento.get());
+    }
+
     // Reemplazar los datos anteriores
     gestor.limpiarDepartamentos();
 
-    for (auto& departamento : temporales) {
+    for (Departamento* departamento : punteros) {
 
-        if (!gestor.agregarDepartamento(departamento.get())) {
+        if (!gestor.agregarDepartamento(departamento)) {
             gestor.limpiarDepartamentos();
             return false;
         }
 
-        departamento.release();
+        // El gestor ahora es propietario del objeto
+        for (auto& temporal : temporales) {
+            if (temporal.get() == departamento) {
+                temporal.release();
+                break;
+            }
+        }
     }
 
     return true;
