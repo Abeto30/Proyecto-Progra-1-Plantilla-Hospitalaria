@@ -16,6 +16,8 @@ using namespace std;
 // Funciones auxiliares
 string leerTexto(const string& mensaje);
 string leerDato(const string& mensaje);
+bool correoValido(const string& correo);
+string leerCorreo(const string& mensaje);
 
 // Funciones del menu
 void registrarEmpleado(
@@ -55,7 +57,7 @@ string leerTexto(const string& mensaje) {
     }
 }
 
-// Leer identificacion, telefono y correo
+// Leer identificacion y telefono
 string leerDato(const string& mensaje) {
     string dato;
 
@@ -91,6 +93,14 @@ string leerCorreo(const string& mensaje) {
     while (true) {
         cout << mensaje;
         getline(cin, correo);
+
+        // Eliminar espacios al inicio y al final
+        size_t inicio = correo.find_first_not_of(" \t\r\n");
+
+        if (inicio != string::npos) {
+            size_t fin = correo.find_last_not_of(" \t\r\n");
+            correo = correo.substr(inicio, fin - inicio + 1);
+        }
 
         if (correoValido(correo)) {
             return correo;
