@@ -5,6 +5,8 @@
 #include "Menus/MenuEmpleado.h"
 #include "Menus/GestionDepartamento.h"
 #include "Menus/GestionPuesto.h"
+#include "Menus/GestionPlanilla.h"
+#include "Gestores/GestorComprobantes.h"
 
 using namespace std;
 
@@ -26,6 +28,7 @@ void menu() {
 int main() {
     GestorEmpleados gestor;
     GestorDepartamentos gestorDepartamentos;
+    GestorComprobantes gestorComprobantes;
 
     int opcion;
 
@@ -35,20 +38,20 @@ int main() {
         opcion = leerEntero("Ingrese una opcion: ", 1, 7);
 
         switch (opcion) {
-           case 1:
+            case 1:
                 menuEmpleado(gestor, gestorDepartamentos);
                 break;
 
             case 2:
                 menuDepartamento(gestorDepartamentos, gestor);
                 break;
-
+            
            case 3:
                 menuPuesto(gestorDepartamentos);
                 break;
-                
+
             case 4:
-                cout << "Gestion de planilla" << endl;
+                menuPlanilla(gestor, gestorComprobantes);
                 break;
 
             case 5:
