@@ -35,6 +35,22 @@ void Enfermero::setTurno(const std::string& turno) {
     }
 }
 
+int Enfermero::getHorasExtras() const {
+    return horasExtras;
+}
+
+int Enfermero::getHorasNocturnas() const {
+    return horasNocturnas;
+}
+
+double Enfermero::getTarifaHoraExtra() const {
+    return tarifaHoraExtra;
+}
+
+double Enfermero::getTarifaHoraNocturna() const {
+    return tarifaHoraNocturna;
+}
+
 // Registrar horas extras
 void Enfermero::registrarHorasExtras(int horas) {
     if (horas > 0 && horas <= 1000000 - horasExtras) {

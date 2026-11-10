@@ -22,6 +22,9 @@ public:
     std::string getCargo() const;
     void setCargo(const std::string& cargo);
 
+    int getHorasExtras() const;
+    double getTarifaHoraExtra() const;
+
     void registrarHorasExtras(int horas);
 
     double calcularPagoHorasExtras() const;
