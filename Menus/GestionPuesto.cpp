@@ -23,6 +23,8 @@ void menuPuesto(GestorDepartamentos& gestor)
 
     do
     {
+        limpiarConsola();
+
         cout << "\n===================================" << endl;
         cout << "         GESTION DE PUESTOS" << endl;
         cout << "===================================" << endl;
@@ -36,26 +38,36 @@ void menuPuesto(GestorDepartamentos& gestor)
 
         opcion = leerEntero("Seleccione una opcion: ", 0, 5);
 
+        if (opcion != 0)
+        {
+            limpiarConsola();
+        }
+
         switch (opcion)
         {
             case 1:
                 registrarPuesto(gestor);
+                pausarConsola();
                 break;
 
             case 2:
                 mostrarPuestos(gestor);
+                pausarConsola();
                 break;
 
             case 3:
                 buscarPuesto(gestor);
+                pausarConsola();
                 break;
 
             case 4:
                 eliminarPuesto(gestor);
+                pausarConsola();
                 break;
 
             case 5:
                 consultarCantidadPuestos(gestor);
+                pausarConsola();
                 break;
 
             case 0:
@@ -275,4 +287,3 @@ void consultarCantidadPuestos(const GestorDepartamentos& gestor)
     cout << "\nCantidad total de puestos registrados: "
          << total << endl;
 }
-//GestionPuesto .cpp
