@@ -6,6 +6,7 @@
 #include <sstream>
 #include <cmath>
 #include <stdexcept>
+#include <cstdlib>
 
 using namespace std;
 
@@ -191,4 +192,18 @@ bool leerBooleano(const string& mensaje)
 
     return valor == 1;
 }
-//Entrada .cpp
+
+void limpiarConsola()
+{
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+void pausarConsola()
+{
+    cout << "\nPresione ENTER para continuar...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}

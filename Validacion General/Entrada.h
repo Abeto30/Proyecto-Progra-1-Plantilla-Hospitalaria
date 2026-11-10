@@ -17,7 +17,7 @@ double leerDouble(const string& mensaje, double minimo, bool estrictoMayor);
 
 bool leerBooleano(const string& mensaje);
 
-void limpiarConsla();
+void limpiarConsola();
 
 void pausarConsola();
 
