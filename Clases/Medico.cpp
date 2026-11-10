@@ -34,6 +34,8 @@ void Medico::setEspecialidad(const std::string& especialidad) {
     }
 }
 
+
+
 // Registrar horas extras
 void Medico::registrarHorasExtras(int horas) {
     if (horas > 0 && horas <= 1000000 - horasExtras) {

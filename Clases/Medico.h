@@ -23,6 +23,11 @@ public:
 
     std::string getEspecialidad() const;
     void setEspecialidad(const std::string& especialidad);
+    int getHorasExtras() const;
+    int getHorasGuardia() const;
+
+    double getTarifaHoraExtra() const;
+    double getTarifaHoraGuardia() const;
 
     void registrarHorasExtras(int horas);
     void registrarHorasGuardia(int horas);
@@ -37,4 +42,4 @@ public:
     void setTarifaHoraGuardia(double tarifa);
 };
 
-#endif // MEDICO.H
+#endif // MEDICO.h
