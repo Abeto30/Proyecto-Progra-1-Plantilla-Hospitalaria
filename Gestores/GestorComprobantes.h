@@ -27,4 +27,4 @@ public:
 };
 
 #endif
-//ComprobantePago .h
+//GestorComprobantePago .h
