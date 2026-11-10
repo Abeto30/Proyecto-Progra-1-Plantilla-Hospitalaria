@@ -6,98 +6,38 @@
 
 #include <sstream>
 #include <iomanip>
-#include <vector>
 
-bool SerializadorDepartamentos::deserializar(
-    const std::string& datos,
-    GestorDepartamentos& gestor) {
+std::string SerializadorDepartamentos::serializar(
+    const GestorDepartamentos& gestor) {
 
-    std::istringstream entrada(datos);
+    std::ostringstream salida;
 
-    int cantidadDepartamentos;
+    // Guardar la cantidad de departamentos
+    salida << gestor.getCantidadDepartamentos() << '\n';
 
-    // Leer la cantidad de departamentos
-    if (!(entrada >> cantidadDepartamentos) || cantidadDepartamentos < 0) {
-        return false;
-    }
+    // Recorrer los departamentos
+    for (int i = 0; i < gestor.getCantidadDepartamentos(); i++) {
 
-    struct DatosPuesto {
-        int id;
-        std::string nombre;
-        std::string descripcion;
-    };
+        Departamento* departamento =
+            gestor.obtenerDepartamentoEnPosicion(i);
 
-    struct DatosDepartamento {
-        int id;
-        std::string nombre;
-        std::string descripcion;
-        std::vector<DatosPuesto> puestos;
-    };
+        // Guardar los datos del departamento
+        salida << departamento->getId() << ' '
+               << std::quoted(departamento->getNombre()) << ' '
+               << std::quoted(departamento->getDescripcion()) << ' '
+               << departamento->getCantidadPuestos() << '\n';
 
-    std::vector<DatosDepartamento> departamentosLeidos;
+        // Guardar los puestos del departamento
+        for (int j = 0; j < departamento->getCantidadPuestos(); j++) {
 
-    // Leer todos los departamentos y sus puestos
-    for (int i = 0; i < cantidadDepartamentos; i++) {
-        DatosDepartamento departamento;
-        int cantidadPuestos;
+            Puesto puesto =
+                departamento->obtenerPuestoEnPosicion(j);
 
-        if (!(entrada >> departamento.id
-                      >> std::quoted(departamento.nombre)
-                      >> std::quoted(departamento.descripcion)
-                      >> cantidadPuestos)
-            || cantidadPuestos < 0) {
-            return false;
-        }
-
-        for (int j = 0; j < cantidadPuestos; j++) {
-            DatosPuesto puesto;
-
-            if (!(entrada >> puesto.id
-                          >> std::quoted(puesto.nombre)
-                          >> std::quoted(puesto.descripcion))) {
-                return false;
-            }
-
-            departamento.puestos.push_back(puesto);
-        }
-
-        departamentosLeidos.push_back(departamento);
-    }
-
-    // Reconstruir los departamentos
-    gestor.limpiarDepartamentos();
-
-    for (const DatosDepartamento& datosDepartamento : departamentosLeidos) {
-
-        Departamento* departamento = new Departamento(
-            datosDepartamento.id,
-            datosDepartamento.nombre,
-            datosDepartamento.descripcion
-        );
-
-        // Reconstruir los puestos del departamento
-        for (const DatosPuesto& datosPuesto : datosDepartamento.puestos) {
-
-            Puesto puesto(
-                datosPuesto.id,
-                datosPuesto.nombre,
-                datosPuesto.descripcion
-            );
-
-            if (!departamento->agregarPuesto(puesto)) {
-                delete departamento;
-                gestor.limpiarDepartamentos();
-                return false;
-            }
-        }
-
-        // Agregar el departamento al gestor
-        if (!gestor.agregarDepartamento(departamento)) {
-            delete departamento;
-            gestor.limpiarDepartamentos();
-            return false;
+            salida << puesto.getId() << ' '
+                   << std::quoted(puesto.getNombre()) << ' '
+                   << std::quoted(puesto.getDescripcion()) << '\n';
         }
     }
 
-    return true;
+    return salida.str();
 }
