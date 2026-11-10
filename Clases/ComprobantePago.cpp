@@ -1,28 +1,42 @@
+
 #include "ComprobantePago.h"
 #include <stdexcept>
 #include <cmath>
 
 // Constructor
-ComprobantePago::ComprobantePago(int id,
-                                 Empleado* empleado,
-                                 Departamento* departamento,
-                                 double salarioBruto,
-                                 double deducciones,
-                                 const std::string& fecha)
+ComprobantePago::ComprobantePago(
+    int id,
+    int empleadoId,
+    const std::string& nombreEmpleado,
+    const std::string& identificacion,
+    const std::string& tipoEmpleado,
+    int departamentoId,
+    const std::string& nombreDepartamento,
+    double salarioBruto,
+    double deducciones,
+    const std::string& fecha
+)
     : id(id),
-      empleado(empleado),
-      departamento(departamento),
+      empleadoId(empleadoId),
+      nombreEmpleado(nombreEmpleado),
+      identificacion(identificacion),
+      tipoEmpleado(tipoEmpleado),
+      departamentoId(departamentoId),
+      nombreDepartamento(nombreDepartamento),
       salarioBruto(salarioBruto),
       deducciones(deducciones),
       salarioNeto(0),
       fecha(fecha) {
 
-    if (id <= 0) {
-        throw std::invalid_argument("El ID debe ser mayor que cero.");
+    if (id <= 0 || empleadoId <= 0 || departamentoId <= 0) {
+        throw std::invalid_argument("Los ID deben ser mayores que cero.");
     }
 
-    if (empleado == nullptr || departamento == nullptr) {
-        throw std::invalid_argument("Empleado o departamento invalido.");
+    if (nombreEmpleado.empty() ||
+        identificacion.empty() ||
+        tipoEmpleado.empty() ||
+        nombreDepartamento.empty()) {
+        throw std::invalid_argument("Los datos del empleado o departamento son invalidos.");
     }
 
     if (!std::isfinite(salarioBruto) || salarioBruto < 0) {
@@ -43,32 +57,46 @@ ComprobantePago::ComprobantePago(int id,
     calcularSalarioNeto();
 }
 
-// Obtener ID
+// Obtener ID del comprobante
 int ComprobantePago::getId() const {
     return id;
 }
 
-// Obtener empleado
-Empleado* ComprobantePago::getEmpleado() const {
-    return empleado;
+// Obtener datos del empleado
+int ComprobantePago::getEmpleadoId() const {
+    return empleadoId;
 }
 
-// Obtener departamento
-Departamento* ComprobantePago::getDepartamento() const {
-    return departamento;
+std::string ComprobantePago::getNombreEmpleado() const {
+    return nombreEmpleado;
 }
 
-// Obtener salario bruto
+std::string ComprobantePago::getIdentificacion() const {
+    return identificacion;
+}
+
+std::string ComprobantePago::getTipoEmpleado() const {
+    return tipoEmpleado;
+}
+
+// Obtener datos del departamento
+int ComprobantePago::getDepartamentoId() const {
+    return departamentoId;
+}
+
+std::string ComprobantePago::getNombreDepartamento() const {
+    return nombreDepartamento;
+}
+
+// Obtener salarios
 double ComprobantePago::getSalarioBruto() const {
     return salarioBruto;
 }
 
-// Obtener deducciones
 double ComprobantePago::getDeducciones() const {
     return deducciones;
 }
 
-// Obtener salario neto
 double ComprobantePago::getSalarioNeto() const {
     return salarioNeto;
 }
@@ -94,3 +122,4 @@ void ComprobantePago::setDeducciones(double deducciones) {
 void ComprobantePago::calcularSalarioNeto() {
     salarioNeto = salarioBruto - deducciones;
 }
+//ComprobantePago .cpp
