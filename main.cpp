@@ -1,9 +1,10 @@
 
 #include <iostream>
 
+#include "Validacion General/Entrada.h"
 #include "Menus/MenuEmpleado.h"
 #include "Menus/GestionDepartamento.h"
-#include "Validacion General/Entrada.h"
+#include "Menus/GestionPuesto.h"
 
 using namespace std;
 
@@ -42,9 +43,9 @@ int main() {
                 menuDepartamento(gestorDepartamentos);
                 break;
 
-            case 3:
-                cout << "Gestion de puestos" << endl;
-                break;
+           case 3:
+                menuPuesto(gestorDepartamentos);
+                  break;
 
             case 4:
                 cout << "Gestion de planilla" << endl;
