@@ -1,9 +1,12 @@
 
 #include "ComprobantePago.h"
+#include "Empleado.h"
+#include "Departamento.h"
+
 #include <stdexcept>
 #include <cmath>
 
-// Constructor
+// Constructor para reconstruir comprobantes desde archivos
 ComprobantePago::ComprobantePago(
     int id,
     int empleadoId,
@@ -17,6 +20,8 @@ ComprobantePago::ComprobantePago(
     const std::string& fecha
 )
     : id(id),
+      empleado(nullptr),
+      departamento(nullptr),
       empleadoId(empleadoId),
       nombreEmpleado(nombreEmpleado),
       identificacion(identificacion),
@@ -57,9 +62,48 @@ ComprobantePago::ComprobantePago(
     calcularSalarioNeto();
 }
 
+// Constructor que relaciona el comprobante con las entidades existentes
+ComprobantePago::ComprobantePago(
+    int id,
+    Empleado* empleado,
+    Departamento* departamento,
+    double salarioBruto,
+    double deducciones,
+    const std::string& fecha
+)
+    : ComprobantePago(
+        id,
+        empleado ? empleado->getId() : 0,
+        empleado ? empleado->getNombre() : "",
+        empleado ? empleado->getIdentificacion() : "",
+        empleado ? empleado->getTipoEmpleado() : "",
+        departamento ? departamento->getId() : 0,
+        departamento ? departamento->getNombre() : "",
+        salarioBruto,
+        deducciones,
+        fecha
+    ) {
+
+    if (empleado == nullptr || departamento == nullptr) {
+        throw std::invalid_argument("El empleado y el departamento no pueden ser nulos.");
+    }
+
+    this->empleado = empleado;
+    this->departamento = departamento;
+}
+
 // Obtener ID del comprobante
 int ComprobantePago::getId() const {
     return id;
+}
+
+// Obtener referencias a las entidades
+Empleado* ComprobantePago::getEmpleado() const {
+    return empleado;
+}
+
+Departamento* ComprobantePago::getDepartamento() const {
+    return departamento;
 }
 
 // Obtener datos del empleado
@@ -122,4 +166,3 @@ void ComprobantePago::setDeducciones(double deducciones) {
 void ComprobantePago::calcularSalarioNeto() {
     salarioNeto = salarioBruto - deducciones;
 }
-//ComprobantePago .cpp
