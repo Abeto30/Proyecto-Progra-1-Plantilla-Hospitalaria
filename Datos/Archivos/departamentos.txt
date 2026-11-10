@@ -1,2 +1,3 @@
 1
-100 "Emergencias" "Departamento de prueba para verificar persistencia." 0
+100 "Emergencias" "Departamento de prueba para verificar persistencia." 1
+200 "Medico Guarfia" "Atencion medica de emergencia"
