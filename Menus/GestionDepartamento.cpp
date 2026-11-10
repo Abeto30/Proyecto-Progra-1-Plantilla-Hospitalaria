@@ -3,6 +3,7 @@
 #include <string>
 
 #include "../Clases/Departamento.h"
+#include "../Clases/Empleado.h"
 #include "GestionDepartamento.h"
 #include "../Validacion General/Entrada.h"
 
@@ -12,10 +13,17 @@ using namespace std;
 void registrarDepartamento(GestorDepartamentos& gestor);
 void mostrarDepartamentos(const GestorDepartamentos& gestor);
 void buscarDepartamento(GestorDepartamentos& gestor);
-void eliminarDepartamento(GestorDepartamentos& gestor);
+
+void eliminarDepartamento(
+    GestorDepartamentos& gestor,
+    GestorEmpleados& gestorEmpleados
+);
 
 // Menu de departamentos
-void menuDepartamento(GestorDepartamentos& gestor) {
+void menuDepartamento(
+    GestorDepartamentos& gestor,
+    GestorEmpleados& gestorEmpleados
+) {
     int opcion;
 
     do {
@@ -46,7 +54,7 @@ void menuDepartamento(GestorDepartamentos& gestor) {
                 break;
 
             case 4:
-                eliminarDepartamento(gestor);
+                eliminarDepartamento(gestor, gestorEmpleados);
                 break;
 
             case 5:
@@ -146,18 +154,41 @@ void buscarDepartamento(GestorDepartamentos& gestor) {
 }
 
 // Eliminar departamento
-void eliminarDepartamento(GestorDepartamentos& gestor) {
+void eliminarDepartamento(
+    GestorDepartamentos& gestor,
+    GestorEmpleados& gestorEmpleados
+) {
     int id = leerEntero(
         "\nIngrese el ID del departamento que desea eliminar: ",
         1,
         2147483647
     );
 
+    Departamento* departamento =
+        gestor.buscarDepartamentoPorId(id);
+
+    if (departamento == nullptr) {
+        cout << "No existe un departamento con ese ID." << endl;
+        return;
+    }
+
+    // Verificar si existen empleados asignados
+    for (int i = 0; i < gestorEmpleados.getCantidadEmpleados(); i++) {
+        Empleado* empleado =
+            gestorEmpleados.obtenerEmpleadoEnPosicion(i);
+
+        if (empleado != nullptr &&
+            empleado->getDepartamento() == departamento) {
+
+            cout << "\nNo se puede eliminar el departamento." << endl;
+            cout << "Tiene empleados asignados." << endl;
+            return;
+        }
+    }
+
     if (gestor.eliminarDepartamentoPorId(id)) {
         cout << "Departamento eliminado correctamente." << endl;
     } else {
-        cout << "No existe un departamento con ese ID." << endl;
+        cout << "No se pudo eliminar el departamento." << endl;
     }
 }
-
-// Gestion Departamentos.cpp
