@@ -44,7 +44,7 @@ int GestorComprobantes::getCantidadComprobantes() const {
     return comprobantes.getCantidad();
 }
 
-// Obtener comprobante por posicion
+// Obtener comprobante por posición
 ComprobantePago* GestorComprobantes::obtenerComprobanteEnPosicion(
     int posicion
 ) const {
@@ -53,6 +53,38 @@ ComprobantePago* GestorComprobantes::obtenerComprobanteEnPosicion(
     }
 
     return comprobantes.obtener(posicion);
+}
+
+// Verificar si un empleado tiene comprobantes
+bool GestorComprobantes::tieneComprobanteParaEmpleado(
+    int empleadoId
+) const {
+    for (int i = 0; i < comprobantes.getCantidad(); i++) {
+        ComprobantePago* comprobante = comprobantes.obtener(i);
+
+        if (comprobante != nullptr &&
+            comprobante->getEmpleadoId() == empleadoId) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+// Verificar si un departamento tiene comprobantes
+bool GestorComprobantes::tieneComprobanteParaDepartamento(
+    int departamentoId
+) const {
+    for (int i = 0; i < comprobantes.getCantidad(); i++) {
+        ComprobantePago* comprobante = comprobantes.obtener(i);
+
+        if (comprobante != nullptr &&
+            comprobante->getDepartamentoId() == departamentoId) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 // Limpiar comprobantes
@@ -64,4 +96,3 @@ void GestorComprobantes::limpiarComprobantes() {
         comprobantes.eliminar(0);
     }
 }
-//GestorComprobantePago .cpp

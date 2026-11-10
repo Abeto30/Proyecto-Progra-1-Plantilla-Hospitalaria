@@ -23,8 +23,10 @@ public:
 
     ComprobantePago* obtenerComprobanteEnPosicion(int posicion) const;
 
+    bool tieneComprobanteParaEmpleado(int empleadoId) const;
+    bool tieneComprobanteParaDepartamento(int departamentoId) const;
+
     void limpiarComprobantes();
 };
 
 #endif
-//GestorComprobantePago .h
