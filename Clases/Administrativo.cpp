@@ -33,6 +33,14 @@ void Administrativo::setCargo(const std::string& cargo) {
     }
 }
 
+int Administrativo::getHorasExtras() const {
+    return horasExtras;
+}
+
+double Administrativo::getTarifaHoraExtra() const {
+    return tarifaHoraExtra;
+}
+
 // Registrar horas extras
 void Administrativo::registrarHorasExtras(int horas) {
     if (horas > 0 && horas <= 1000000 - horasExtras) {
