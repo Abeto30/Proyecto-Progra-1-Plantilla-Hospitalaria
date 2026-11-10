@@ -1,6 +1,5 @@
 #include <iostream>
 #include <iomanip>
-#include <limits>
 #include <string>
 #include <sstream>
 #include <cmath>
@@ -10,11 +9,11 @@
 #include "../Clases/Medico.h"
 #include "../Clases/Enfermero.h"
 #include "../Clases/Administrativo.h"
+#include "../Validacion General/Entrada.h"
+
 using namespace std;
 
 // Funciones auxiliares
-int leerEntero(const string& mensaje);
-double leerDecimal(const string& mensaje);
 string leerTexto(const string& mensaje);
 string leerDato(const string& mensaje);
 
