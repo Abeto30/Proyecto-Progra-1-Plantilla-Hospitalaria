@@ -19,7 +19,7 @@ using namespace std;
 // Mostrar el menu principal
 void menu() {
     cout << "\n==========================================" << endl;
-    cout << " BIENVENIDO AL SISTEMA DE PLANILLA" << endl;
+    cout << "       BIENVENIDO AL SISTEMA DE PLANILLA" << endl;
     cout << "==========================================" << endl;
     cout << "1. Gestionar empleados" << endl;
     cout << "2. Gestionar departamentos" << endl;
@@ -174,9 +174,11 @@ int main() {
         cout << "No se encontraron comprobantes guardados." << endl;
     }
 
+    // Mostrar el menu principal
     int opcion;
 
     do {
+        limpiarConsola();
         menu();
 
         opcion = leerEntero("Ingrese una opcion: ", 1, 7);
@@ -184,18 +186,20 @@ int main() {
         switch (opcion) {
 
             case 1:
-            menuEmpleado(
-             gestor,
-              gestorDepartamentos,
-                gestorComprobantes);
+                menuEmpleado(
+                    gestor,
+                    gestorDepartamentos,
+                    gestorComprobantes
+                );
                 break;
 
             case 2:
-            menuDepartamento(
-             gestorDepartamentos,
-              gestor,
-                gestorComprobantes);
-                 break;
+                menuDepartamento(
+                    gestorDepartamentos,
+                    gestor,
+                    gestorComprobantes
+                );
+                break;
 
             case 3:
                 menuPuesto(gestorDepartamentos);
@@ -216,6 +220,8 @@ int main() {
                     gestor,
                     gestorComprobantes
                 );
+
+                pausarConsola();
                 break;
 
             case 7:
@@ -226,7 +232,7 @@ int main() {
                     gestorComprobantes
                 );
 
-                cout << "Saliendo del programa..." << endl;
+                cout << "\nSaliendo del programa..." << endl;
                 break;
         }
 
