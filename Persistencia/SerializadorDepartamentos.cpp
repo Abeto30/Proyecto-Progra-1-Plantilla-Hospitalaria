@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <vector>
 #include <memory>
+#include <utility>
 
 // SERIALIZAR: convertir departamentos y puestos a texto
 std::string SerializadorDepartamentos::serializar(

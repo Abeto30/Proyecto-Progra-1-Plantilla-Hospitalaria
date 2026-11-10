@@ -13,4 +13,4 @@ public:
                              GestorDepartamentos& gestor);
 };
 
-#endif // SERIALIZADOR_DEPARTAMENTOS_H
+#endif // SERIALIZADORDEPARTAMENTOS.h
