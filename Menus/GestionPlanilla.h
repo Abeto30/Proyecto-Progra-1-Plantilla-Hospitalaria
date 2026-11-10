@@ -1,4 +1,3 @@
-
 #ifndef GESTION_PLANILLA_H
 #define GESTION_PLANILLA_H
 
@@ -10,5 +9,10 @@ void menuPlanilla(
     GestorComprobantes& gestorComprobantes
 );
 
+void menuConsultaComprobantes(
+    const GestorComprobantes& gestorComprobantes
+);
+
 #endif
+
 //GestionPlanilla .h

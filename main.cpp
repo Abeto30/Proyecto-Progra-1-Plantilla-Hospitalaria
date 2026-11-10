@@ -198,7 +198,7 @@ int main() {
                 break;
 
             case 5:
-                cout << "Consulta de comprobantes de pago" << endl;
+                menuConsultaComprobantes(gestorComprobantes);
                 break;
 
             case 6:
