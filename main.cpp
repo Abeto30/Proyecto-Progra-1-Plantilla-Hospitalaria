@@ -12,6 +12,7 @@
 #include "Persistencia/Almacenamiento.h"
 #include "Persistencia/SerializadorDepartamentos.h"
 #include "Persistencia/SerializadorEmpleados.h"
+#include "Persistencia/SerializadorPlanilla.h"
 
 using namespace std;
 
@@ -62,14 +63,32 @@ void guardarEmpleados(
     }
 }
 
-// Guardar todos los datos implementados
+// Guardar comprobantes de pago
+void guardarPlanilla(
+    AlmacenamientoArchivos& almacenamiento,
+    const GestorComprobantes& gestorComprobantes) {
+
+    string datos = SerializadorPlanilla::serializar(
+        gestorComprobantes
+    );
+
+    if (almacenamiento.guardarPlanilla(datos)) {
+        cout << "Comprobantes de pago guardados correctamente." << endl;
+    } else {
+        cout << "Error al guardar los comprobantes de pago." << endl;
+    }
+}
+
+// Guardar todos los datos
 void guardarDatos(
     AlmacenamientoArchivos& almacenamiento,
     const GestorDepartamentos& gestorDepartamentos,
-    const GestorEmpleados& gestorEmpleados) {
+    const GestorEmpleados& gestorEmpleados,
+    const GestorComprobantes& gestorComprobantes) {
 
     guardarDepartamentos(almacenamiento, gestorDepartamentos);
     guardarEmpleados(almacenamiento, gestorEmpleados);
+    guardarPlanilla(almacenamiento, gestorComprobantes);
 }
 
 int main() {
@@ -129,6 +148,30 @@ int main() {
              << endl;
     }
 
+    // Cargar comprobantes de pago
+    string datosPlanilla;
+
+    if (almacenamiento.cargarPlanilla(datosPlanilla)) {
+
+        if (!datosPlanilla.empty()) {
+
+            if (SerializadorPlanilla::deserializar(
+                    datosPlanilla,
+                    gestorComprobantes)) {
+
+                cout << "Comprobantes de pago cargados correctamente."
+                     << endl;
+
+            } else {
+                cout << "Error: los datos de planilla son invalidos."
+                     << endl;
+            }
+        }
+
+    } else {
+        cout << "No se encontraron comprobantes guardados." << endl;
+    }
+
     int opcion;
 
     do {
@@ -162,7 +205,8 @@ int main() {
                 guardarDatos(
                     almacenamiento,
                     gestorDepartamentos,
-                    gestor
+                    gestor,
+                    gestorComprobantes
                 );
                 break;
 
@@ -170,7 +214,8 @@ int main() {
                 guardarDatos(
                     almacenamiento,
                     gestorDepartamentos,
-                    gestor
+                    gestor,
+                    gestorComprobantes
                 );
 
                 cout << "Saliendo del programa..." << endl;
