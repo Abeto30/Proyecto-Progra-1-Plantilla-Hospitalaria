@@ -72,6 +72,34 @@ string leerDato(const string& mensaje) {
     }
 }
 
+// Validar formato basico de correo electronico
+bool correoValido(const string& correo) {
+    size_t arroba = correo.find('@');
+    size_t punto = correo.find('.', arroba);
+
+    return arroba != string::npos &&
+           punto != string::npos &&
+           arroba > 0 &&
+           punto > arroba + 1 &&
+           punto < correo.length() - 1;
+}
+
+// Leer correo electronico validado
+string leerCorreo(const string& mensaje) {
+    string correo;
+
+    while (true) {
+        cout << mensaje;
+        getline(cin, correo);
+
+        if (correoValido(correo)) {
+            return correo;
+        }
+
+        cout << "Error: ingrese un correo electronico valido.\n";
+    }
+}
+
 // Menu de empleados
 void menuEmpleado(
     GestorEmpleados& gestor,
