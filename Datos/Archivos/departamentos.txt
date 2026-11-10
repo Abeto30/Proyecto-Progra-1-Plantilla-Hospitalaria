@@ -3,17 +3,14 @@
 200 "Medico de emergencias" "Diagnostico y atencion de urgencias."
 201 "Enfermero de emergencias" "Atencion y monitoreo de pacientes."
 202 "Asistente de admision" "Registro e ingreso de pacientes."
-
 110 "Consulta Externa" "Atencion medica programada y seguimiento de pacientes." 3
 210 "Medico general" "Consulta y valoracion general."
 211 "Enfermero de consulta" "Apoyo durante consultas medicas."
 212 "Secretario clinico" "Gestion de citas y expedientes."
-
 120 "Hospitalizacion" "Atencion y cuidado de pacientes internados." 3
 220 "Medico hospitalario" "Seguimiento de pacientes internados."
 221 "Enfermero de hospitalizacion" "Cuidados y administracion de tratamientos."
 222 "Asistente de sala" "Apoyo operativo en las salas."
-
 130 "Laboratorio" "Analisis de muestras y apoyo al diagnostico clinico." 2
 230 "Microbiologo" "Analisis y procesamiento de muestras."
 231 "Tecnico de laboratorio" "Preparacion y manejo de muestras."
