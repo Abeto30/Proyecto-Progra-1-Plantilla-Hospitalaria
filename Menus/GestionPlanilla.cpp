@@ -33,6 +33,8 @@ void menuPlanilla(
     int opcion;
 
     do {
+        limpiarConsola();
+
         cout << "\n===================================" << endl;
         cout << "        GESTION DE PLANILLA" << endl;
         cout << "===================================" << endl;
@@ -43,13 +45,19 @@ void menuPlanilla(
 
         opcion = leerEntero("Seleccione una opcion: ", 0, 2);
 
+        if (opcion != 0) {
+            limpiarConsola();
+        }
+
         switch (opcion) {
             case 1:
                 generarPlanilla(gestorEmpleados, gestorComprobantes);
+                pausarConsola();
                 break;
 
             case 2:
                 mostrarResumenPlanilla(gestorComprobantes);
+                pausarConsola();
                 break;
 
             case 0:
@@ -110,8 +118,6 @@ void generarPlanilla(
         ComprobantePago* comprobante = nullptr;
 
         try {
-            // Crear comprobante con referencias al empleado
-            // y al departamento correspondientes.
             comprobante = new ComprobantePago(
                 siguienteId,
                 empleado,
@@ -225,6 +231,8 @@ void menuConsultaComprobantes(
     int opcion;
 
     do {
+        limpiarConsola();
+
         cout << "\n===================================" << endl;
         cout << "    CONSULTA DE COMPROBANTES" << endl;
         cout << "===================================" << endl;
@@ -235,6 +243,10 @@ void menuConsultaComprobantes(
 
         opcion = leerEntero("Seleccione una opcion: ", 0, 2);
 
+        if (opcion != 0) {
+            limpiarConsola();
+        }
+
         switch (opcion) {
 
             case 1: {
@@ -244,6 +256,7 @@ void menuConsultaComprobantes(
                 if (cantidad == 0) {
                     cout << "\nNo hay comprobantes registrados."
                          << endl;
+                    pausarConsola();
                     break;
                 }
 
@@ -292,6 +305,7 @@ void menuConsultaComprobantes(
                          << endl;
                 }
 
+                pausarConsola();
                 break;
             }
 
@@ -300,6 +314,7 @@ void menuConsultaComprobantes(
                 if (gestorComprobantes.getCantidadComprobantes() == 0) {
                     cout << "\nNo hay comprobantes registrados."
                          << endl;
+                    pausarConsola();
                     break;
                 }
 
@@ -315,6 +330,7 @@ void menuConsultaComprobantes(
                 if (comprobante == nullptr) {
                     cout << "\nNo se encontro un comprobante con ese ID."
                          << endl;
+                    pausarConsola();
                     break;
                 }
 
@@ -350,6 +366,7 @@ void menuConsultaComprobantes(
                 cout << "================================="
                      << endl;
 
+                pausarConsola();
                 break;
             }
 
