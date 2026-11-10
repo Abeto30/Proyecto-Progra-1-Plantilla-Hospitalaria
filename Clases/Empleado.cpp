@@ -1,5 +1,7 @@
+
 #include "Empleado.h"
 #include <cmath>
+#include <string>
 
 // Verificar que un texto no esté vacío ni contenga solamente espacios
 bool textoValido(const std::string& texto) {
@@ -21,7 +23,8 @@ Empleado::Empleado(int id,
       correo(textoValido(correo) ? correo : ""),
       salarioBase(std::isfinite(salarioBase) && salarioBase >= 0
                       ? salarioBase : 0),
-      activo(true) {
+      activo(true),
+      departamento(nullptr) {
 }
 
 // Destructor
@@ -54,6 +57,10 @@ double Empleado::getSalarioBase() const {
 
 bool Empleado::estaActivo() const {
     return activo;
+}
+
+Departamento* Empleado::getDepartamento() const {
+    return departamento;
 }
 
 // Setters
@@ -99,4 +106,8 @@ void Empleado::setSalarioBase(double salarioBase) {
 
 void Empleado::setActivo(bool activo) {
     this->activo = activo;
+}
+
+void Empleado::setDepartamento(Departamento* departamento) {
+    this->departamento = departamento;
 }
