@@ -1,2 +1,12 @@
-1
-1 1 "Carlos" "257" "Medico" 100 "Emergencias" 85500 6840 "09/11/2026"
+11
+1 1 "Carlos Ramirez" "201234567" "Medico" 100 "Emergencias" 1378000 110240 "31/10/2026"
+2 2 "Maria Fernandez" "202345678" "Enfermero" 100 "Emergencias" 749000 59920 "31/10/2026"
+3 3 "Jose Morales" "203456789" "Administrativo" 100 "Emergencias" 540000 43200 "31/10/2026"
+4 4 "Ana Rodriguez" "204567890" "Medico" 110 "Consulta Externa" 1164000 93120 "31/10/2026"
+5 5 "Luis Vargas" "205678901" "Enfermero" 110 "Consulta Externa" 665100 53208 "31/10/2026"
+6 6 "Sofia Castro" "206789012" "Administrativo" 110 "Consulta Externa" 508000 40640 "31/10/2026"
+7 7 "Andres Jimenez" "207890123" "Medico" 120 "Hospitalizacion" 1367000 109360 "31/10/2026"
+8 8 "Daniela Solis" "208901234" "Enfermero" 120 "Hospitalizacion" 802400 64192 "31/10/2026"
+9 9 "Pedro Herrera" "209012345" "Administrativo" 120 "Hospitalizacion" 526000 42080 "31/10/2026"
+10 10 "Valeria Mendez" "210123456" "Medico" 130 "Laboratorio" 916500 73320 "31/10/2026"
+11 11 "Roberto Chaves" "211234567" "Enfermero" 130 "Laboratorio" 603400 48272 "31/10/2026"
