@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <string>
 #include <cmath>
+#include <exception>
 
 #include "GestionPlanilla.h"
 #include "../Clases/Empleado.h"
@@ -87,6 +88,7 @@ void generarPlanilla(
     cout << "\n========== GENERANDO PLANILLA ==========" << endl;
 
     for (int i = 0; i < gestorEmpleados.getCantidadEmpleados(); i++) {
+
         Empleado* empleado =
             gestorEmpleados.obtenerEmpleadoEnPosicion(i);
 
@@ -108,20 +110,19 @@ void generarPlanilla(
         ComprobantePago* comprobante = nullptr;
 
         try {
+            // Crear comprobante con referencias al empleado
+            // y al departamento correspondientes.
             comprobante = new ComprobantePago(
                 siguienteId,
-                empleado->getId(),
-                empleado->getNombre(),
-                empleado->getIdentificacion(),
-                empleado->getTipoEmpleado(),
-                departamento->getId(),
-                departamento->getNombre(),
+                empleado,
+                departamento,
                 salarioBruto,
                 deducciones,
                 fecha
             );
 
             if (gestorComprobantes.agregarComprobante(comprobante)) {
+
                 empleadosActivos++;
                 comprobantesGenerados++;
 
@@ -146,11 +147,13 @@ void generarPlanilla(
                      << comprobante->getSalarioNeto() << endl;
 
                 siguienteId++;
+
             } else {
                 delete comprobante;
             }
 
         } catch (const exception& e) {
+
             delete comprobante;
 
             cout << "Error al generar comprobante del empleado "
@@ -195,6 +198,7 @@ void mostrarResumenPlanilla(
     cout << "\n========== RESUMEN GENERAL ==========" << endl;
 
     for (int i = 0; i < cantidad; i++) {
+
         ComprobantePago* comprobante =
             gestorComprobantes.obtenerComprobanteEnPosicion(i);
 
@@ -232,6 +236,7 @@ void menuConsultaComprobantes(
         opcion = leerEntero("Seleccione una opcion: ", 0, 2);
 
         switch (opcion) {
+
             case 1: {
                 int cantidad =
                     gestorComprobantes.getCantidadComprobantes();
@@ -246,6 +251,7 @@ void menuConsultaComprobantes(
                      << endl;
 
                 for (int i = 0; i < cantidad; i++) {
+
                     ComprobantePago* comprobante =
                         gestorComprobantes.obtenerComprobanteEnPosicion(i);
 
@@ -255,22 +261,30 @@ void menuConsultaComprobantes(
 
                     cout << "\nID comprobante: "
                          << comprobante->getId() << endl;
+
                     cout << "Fecha: "
                          << comprobante->getFecha() << endl;
+
                     cout << "Empleado: "
                          << comprobante->getNombreEmpleado() << endl;
+
                     cout << "Identificacion: "
                          << comprobante->getIdentificacion() << endl;
+
                     cout << "Tipo de empleado: "
                          << comprobante->getTipoEmpleado() << endl;
+
                     cout << "Departamento: "
                          << comprobante->getNombreDepartamento() << endl;
 
                     cout << fixed << setprecision(2);
+
                     cout << "Salario bruto: "
                          << comprobante->getSalarioBruto() << endl;
+
                     cout << "Deducciones: "
                          << comprobante->getDeducciones() << endl;
+
                     cout << "Salario neto: "
                          << comprobante->getSalarioNeto() << endl;
 
@@ -282,6 +296,7 @@ void menuConsultaComprobantes(
             }
 
             case 2: {
+
                 if (gestorComprobantes.getCantidadComprobantes() == 0) {
                     cout << "\nNo hay comprobantes registrados."
                          << endl;
@@ -305,22 +320,30 @@ void menuConsultaComprobantes(
 
                 cout << "\n========== COMPROBANTE =========="
                      << endl;
+
                 cout << "ID: " << comprobante->getId() << endl;
                 cout << "Fecha: " << comprobante->getFecha() << endl;
+
                 cout << "Empleado: "
                      << comprobante->getNombreEmpleado() << endl;
+
                 cout << "Identificacion: "
                      << comprobante->getIdentificacion() << endl;
+
                 cout << "Tipo de empleado: "
                      << comprobante->getTipoEmpleado() << endl;
+
                 cout << "Departamento: "
                      << comprobante->getNombreDepartamento() << endl;
 
                 cout << fixed << setprecision(2);
+
                 cout << "Salario bruto: "
                      << comprobante->getSalarioBruto() << endl;
+
                 cout << "Deducciones: "
                      << comprobante->getDeducciones() << endl;
+
                 cout << "Salario neto: "
                      << comprobante->getSalarioNeto() << endl;
 
@@ -337,5 +360,3 @@ void menuConsultaComprobantes(
 
     } while (opcion != 0);
 }
-
-// GestionPlanilla.cpp
