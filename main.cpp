@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <string>
 
@@ -10,6 +11,7 @@
 
 #include "Persistencia/Almacenamiento.h"
 #include "Persistencia/SerializadorDepartamentos.h"
+#include "Persistencia/SerializadorEmpleados.h"
 
 using namespace std;
 
@@ -28,7 +30,7 @@ void menu() {
     cout << "==========================================" << endl;
 }
 
-// Guardar los departamentos en el archivo
+// Guardar departamentos
 void guardarDepartamentos(
     AlmacenamientoArchivos& almacenamiento,
     const GestorDepartamentos& gestorDepartamentos) {
@@ -44,6 +46,32 @@ void guardarDepartamentos(
     }
 }
 
+// Guardar empleados
+void guardarEmpleados(
+    AlmacenamientoArchivos& almacenamiento,
+    const GestorEmpleados& gestorEmpleados) {
+
+    string datos = SerializadorEmpleados::serializar(
+        gestorEmpleados
+    );
+
+    if (almacenamiento.guardarEmpleados(datos)) {
+        cout << "Empleados guardados correctamente." << endl;
+    } else {
+        cout << "Error al guardar los empleados." << endl;
+    }
+}
+
+// Guardar todos los datos implementados
+void guardarDatos(
+    AlmacenamientoArchivos& almacenamiento,
+    const GestorDepartamentos& gestorDepartamentos,
+    const GestorEmpleados& gestorEmpleados) {
+
+    guardarDepartamentos(almacenamiento, gestorDepartamentos);
+    guardarEmpleados(almacenamiento, gestorEmpleados);
+}
+
 int main() {
 
     GestorEmpleados gestor;
@@ -52,7 +80,7 @@ int main() {
 
     AlmacenamientoArchivos almacenamiento;
 
-    // Cargar departamentos al iniciar
+    // Cargar departamentos primero
     string datosDepartamentos;
 
     if (almacenamiento.cargarDepartamentos(datosDepartamentos)) {
@@ -73,6 +101,31 @@ int main() {
 
     } else {
         cout << "No se encontraron datos de departamentos guardados."
+             << endl;
+    }
+
+    // Cargar empleados después de los departamentos
+    string datosEmpleados;
+
+    if (almacenamiento.cargarEmpleados(datosEmpleados)) {
+
+        if (!datosEmpleados.empty()) {
+
+            if (SerializadorEmpleados::deserializar(
+                    datosEmpleados,
+                    gestor,
+                    gestorDepartamentos)) {
+
+                cout << "Empleados cargados correctamente." << endl;
+
+            } else {
+                cout << "Error: los datos de empleados son invalidos."
+                     << endl;
+            }
+        }
+
+    } else {
+        cout << "No se encontraron datos de empleados guardados."
              << endl;
     }
 
@@ -106,16 +159,18 @@ int main() {
                 break;
 
             case 6:
-                guardarDepartamentos(
+                guardarDatos(
                     almacenamiento,
-                    gestorDepartamentos
+                    gestorDepartamentos,
+                    gestor
                 );
                 break;
 
             case 7:
-                guardarDepartamentos(
+                guardarDatos(
                     almacenamiento,
-                    gestorDepartamentos
+                    gestorDepartamentos,
+                    gestor
                 );
 
                 cout << "Saliendo del programa..." << endl;
