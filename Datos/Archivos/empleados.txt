@@ -1,3 +1,4 @@
-2
+3
 Medico 1 "Carlos" "257" "2974" "sihng" 85500 1 100 "Nose" 0 0 0 0
 Enfermero 45 "Mario" "2345" "26343543" "mario@gmail.com" 234 1 100 "noche" 0 0 0 0
+Administrativo 23 "rhgdr" "2634" "23634" "mario@gmail.com" 435 1 100 "ger" 0 0
