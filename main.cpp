@@ -36,15 +36,17 @@ int main() {
 
         switch (opcion) {
            case 1:
-                 menuEmpleado(gestor, gestorDepartamentos);
+                menuEmpleado(gestor, gestorDepartamentos);
                 break;
+
             case 2:
-                menuDepartamento(gestorDepartamentos);
+                menuDepartamento(gestorDepartamentos, gestor);
                 break;
+
            case 3:
                 menuPuesto(gestorDepartamentos);
-                  break;
-
+                break;
+                
             case 4:
                 cout << "Gestion de planilla" << endl;
                 break;
