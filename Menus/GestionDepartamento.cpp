@@ -29,6 +29,8 @@ void menuDepartamento(
     int opcion;
 
     do {
+        limpiarConsola();
+
         cout << "\n===================================" << endl;
         cout << "      GESTION DE DEPARTAMENTOS" << endl;
         cout << "===================================" << endl;
@@ -42,17 +44,24 @@ void menuDepartamento(
 
         opcion = leerEntero("Seleccione una opcion: ", 0, 5);
 
+        if (opcion != 0) {
+            limpiarConsola();
+        }
+
         switch (opcion) {
             case 1:
                 registrarDepartamento(gestor);
+                pausarConsola();
                 break;
 
             case 2:
                 mostrarDepartamentos(gestor);
+                pausarConsola();
                 break;
 
             case 3:
                 buscarDepartamento(gestor);
+                pausarConsola();
                 break;
 
             case 4:
@@ -61,11 +70,13 @@ void menuDepartamento(
                     gestorEmpleados,
                     gestorComprobantes
                 );
+                pausarConsola();
                 break;
 
             case 5:
                 cout << "\nCantidad de departamentos: "
                      << gestor.getCantidadDepartamentos() << endl;
+                pausarConsola();
                 break;
 
             case 0:
