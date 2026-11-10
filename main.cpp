@@ -35,14 +35,12 @@ int main() {
         opcion = leerEntero("Ingrese una opcion: ", 1, 7);
 
         switch (opcion) {
-            case 1:
-                menuEmpleado(gestor);
+           case 1:
+                 menuEmpleado(gestor, gestorDepartamentos);
                 break;
-
             case 2:
                 menuDepartamento(gestorDepartamentos);
                 break;
-
            case 3:
                 menuPuesto(gestorDepartamentos);
                   break;

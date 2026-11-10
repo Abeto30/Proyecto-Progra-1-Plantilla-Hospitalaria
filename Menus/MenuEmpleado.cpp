@@ -2,11 +2,13 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <cctype>
 
 #include "MenuEmpleado.h"
 #include "../Clases/Medico.h"
 #include "../Clases/Enfermero.h"
 #include "../Clases/Administrativo.h"
+#include "../Clases/Departamento.h"
 #include "../Validacion General/Entrada.h"
 
 using namespace std;
@@ -16,7 +18,11 @@ string leerTexto(const string& mensaje);
 string leerDato(const string& mensaje);
 
 // Funciones del menu
-void registrarEmpleado(GestorEmpleados& gestor);
+void registrarEmpleado(
+    GestorEmpleados& gestor,
+    GestorDepartamentos& gestorDepartamentos
+);
+
 void mostrarEmpleados(const GestorEmpleados& gestor);
 void buscarEmpleado(GestorEmpleados& gestor);
 void eliminarEmpleado(GestorEmpleados& gestor);
@@ -50,7 +56,6 @@ string leerTexto(const string& mensaje) {
 }
 
 // Leer identificacion, telefono y correo
-// Permite numeros y caracteres especiales, pero no campos vacios.
 string leerDato(const string& mensaje) {
     string dato;
 
@@ -68,7 +73,10 @@ string leerDato(const string& mensaje) {
 }
 
 // Menu de empleados
-void menuEmpleado(GestorEmpleados& gestor) {
+void menuEmpleado(
+    GestorEmpleados& gestor,
+    GestorDepartamentos& gestorDepartamentos
+) {
     int opcion;
 
     do {
@@ -88,7 +96,7 @@ void menuEmpleado(GestorEmpleados& gestor) {
 
         switch (opcion) {
             case 1:
-                registrarEmpleado(gestor);
+                registrarEmpleado(gestor, gestorDepartamentos);
                 break;
 
             case 2:
@@ -121,9 +129,13 @@ void menuEmpleado(GestorEmpleados& gestor) {
 }
 
 // Registrar empleado
-void registrarEmpleado(GestorEmpleados& gestor) {
+void registrarEmpleado(
+    GestorEmpleados& gestor,
+    GestorDepartamentos& gestorDepartamentos
+) {
     int tipo;
     int id;
+    int idDepartamento;
     double salarioBase;
 
     string nombre;
@@ -131,6 +143,42 @@ void registrarEmpleado(GestorEmpleados& gestor) {
     string telefono;
     string correo;
     string datoEspecifico;
+
+    // Verificar que existan departamentos
+    if (gestorDepartamentos.getCantidadDepartamentos() == 0) {
+        cout << "\nNo hay departamentos registrados." << endl;
+        cout << "Debe registrar un departamento primero." << endl;
+        return;
+    }
+
+    // Mostrar departamentos disponibles
+    cout << "\n--- DEPARTAMENTOS DISPONIBLES ---" << endl;
+
+    for (int i = 0; i < gestorDepartamentos.getCantidadDepartamentos(); i++) {
+        Departamento* departamento =
+            gestorDepartamentos.obtenerDepartamentoEnPosicion(i);
+
+        if (departamento != nullptr) {
+            cout << "ID: " << departamento->getId()
+                 << " | Nombre: " << departamento->getNombre()
+                 << endl;
+        }
+    }
+
+    // Seleccionar departamento
+    idDepartamento = leerEntero(
+        "\nIngrese el ID del departamento: ",
+        1,
+        2147483647
+    );
+
+    Departamento* departamento =
+        gestorDepartamentos.buscarDepartamentoPorId(idDepartamento);
+
+    if (departamento == nullptr) {
+        cout << "No existe un departamento con ese ID." << endl;
+        return;
+    }
 
     cout << "\n--- REGISTRO DE EMPLEADO ---" << endl;
     cout << "1. Medico" << endl;
@@ -184,8 +232,13 @@ void registrarEmpleado(GestorEmpleados& gestor) {
             break;
     }
 
+    // Asignar departamento al empleado
+    nuevoEmpleado->setDepartamento(departamento);
+
     if (gestor.agregarEmpleado(nuevoEmpleado)) {
         cout << "\nEmpleado registrado correctamente." << endl;
+        cout << "Departamento asignado: "
+             << departamento->getNombre() << endl;
     } else {
         delete nuevoEmpleado;
         cout << "No se pudo registrar el empleado." << endl;
@@ -213,6 +266,13 @@ void mostrarEmpleados(const GestorEmpleados& gestor) {
             cout << "Telefono: " << empleado->getTelefono() << endl;
             cout << "Correo: " << empleado->getCorreo() << endl;
             cout << "Tipo: " << empleado->getTipoEmpleado() << endl;
+
+            Departamento* departamento = empleado->getDepartamento();
+
+            cout << "Departamento: "
+                 << (departamento != nullptr
+                     ? departamento->getNombre()
+                     : "Sin asignar") << endl;
 
             cout << fixed << setprecision(2);
             cout << "Salario bruto: "
@@ -245,6 +305,14 @@ void buscarEmpleado(GestorEmpleados& gestor) {
     cout << "Telefono: " << empleado->getTelefono() << endl;
     cout << "Correo: " << empleado->getCorreo() << endl;
     cout << "Tipo: " << empleado->getTipoEmpleado() << endl;
+
+    Departamento* departamento = empleado->getDepartamento();
+
+    cout << "Departamento: "
+         << (departamento != nullptr
+             ? departamento->getNombre()
+             : "Sin asignar") << endl;
+
     cout << "Salario bruto: "
          << empleado->calcularSalarioBruto() << endl;
 
