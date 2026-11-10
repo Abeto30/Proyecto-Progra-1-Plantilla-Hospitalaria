@@ -225,7 +225,7 @@ void registrarEmpleado(
     nombre = leerTexto("Nombre completo: ");
     identificacion = leerDato("Identificacion: ");
     telefono = leerDato("Telefono: ");
-    correo = leerDato("Correo: ");
+    correo = leerCorreo("Correo: ");
 
     salarioBase = leerDouble("Salario base: ", 0, true);
 
