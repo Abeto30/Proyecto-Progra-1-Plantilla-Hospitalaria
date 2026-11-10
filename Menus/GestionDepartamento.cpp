@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <string>
 
@@ -152,7 +151,6 @@ void buscarDepartamento(GestorDepartamentos& gestor) {
     cout << "Cantidad de puestos: "
          << departamento->getCantidadPuestos() << endl;
 }
-
 // Eliminar departamento
 void eliminarDepartamento(
     GestorDepartamentos& gestor,
@@ -184,6 +182,13 @@ void eliminarDepartamento(
             cout << "Tiene empleados asignados." << endl;
             return;
         }
+    }
+
+    // Verificar si existen puestos registrados
+    if (departamento->getCantidadPuestos() > 0) {
+        cout << "\nNo se puede eliminar el departamento." << endl;
+        cout << "Primero debe eliminar todos sus puestos." << endl;
+        return;
     }
 
     if (gestor.eliminarDepartamentoPorId(id)) {
